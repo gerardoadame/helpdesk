@@ -28,11 +28,11 @@ class CreateTicketsTable extends Migration
             $table->integer('priority_id');
             $table->integer('technical_id');
 
-            $table->foreign('user_id')->references('id')->on('user');
+            $table->foreign('user_id')->references('id')->on('person');
             $table->foreign('status_id')->references('id')->on('statuses');
             $table->foreign('type_id')->references('id')->on('type_tickets');
             $table->foreign('priority_id')->references('id')->on('priorities');
-            $table->foreign('technical_id')->references('id')->on('user');
+            $table->foreign('technical_id')->references('id')->on('person');
 
         });
     }
