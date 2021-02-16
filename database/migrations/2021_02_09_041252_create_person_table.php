@@ -13,9 +13,8 @@ class CreatePersonTable extends Migration
      */
     public function up()
     {
-<<<<<<< HEAD
         Schema::create('Persons', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->autoIncrement();
             $table->string('name');
             $table->string('last_name');
             $table->string('age',3)->nullable();
@@ -26,11 +25,7 @@ class CreatePersonTable extends Migration
             $table->foreign('user_id')->references('id')->on('Users');
             $table->biginteger('area_id')->unsigned();;
             $table->foreign('area_id')->references('id')->on('Areas');
-=======
-        Schema::create('person', function (Blueprint $table) {
-            $table->integer('id')->autoIncrement();
-            $table->timestamps();
->>>>>>> Gerardo
+
         });
     }
 
