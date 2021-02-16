@@ -29,11 +29,11 @@ class CreateTicketsTable extends Migration
             $table->integer('technical_id');
 
 
-            $table->foreign('employed_id')->references('id')->on('person');
+            $table->foreign('employed_id')->references('id')->on('persons');
             $table->foreign('status_id')->references('id')->on('statuses');
             $table->foreign('type_id')->references('id')->on('type_tickets');
             $table->foreign('priority_id')->references('id')->on('priorities');
-            $table->foreign('technical_id')->references('id')->on('person');
+            $table->foreign('technical_id')->references('id')->on('persons');
 
         });
     }
