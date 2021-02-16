@@ -22,17 +22,17 @@ class CreateTicketsTable extends Migration
             $table->text('image')->nullable();
             $table->text('feedback')->nullable();
             $table->text('technical_image')->nullable();
-            $table->integer('user_id');
+            $table->integer('employed_id');
             $table->integer('status_id');
             $table->integer('type_id');
             $table->integer('priority_id');
             $table->integer('technical_id');
 
-            $table->foreign('user_id')->references('id')->on('user');
+            $table->foreign('employed_id')->references('id')->on('person');
             $table->foreign('status_id')->references('id')->on('statuses');
             $table->foreign('type_id')->references('id')->on('type_tickets');
             $table->foreign('priority_id')->references('id')->on('priorities');
-            $table->foreign('technical_id')->references('id')->on('user');
+            $table->foreign('technical_id')->references('id')->on('person');
 
         });
     }

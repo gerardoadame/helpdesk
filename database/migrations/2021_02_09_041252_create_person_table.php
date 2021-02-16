@@ -14,7 +14,7 @@ class CreatePersonTable extends Migration
     public function up()
     {
         Schema::create('person', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->autoIncrement();
             $table->timestamps();
         });
     }
