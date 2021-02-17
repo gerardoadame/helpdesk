@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Status extends Model
+class Person extends Model
 {
     use HasFactory;
 
-    protected $table = 'statuses';
-    protected $fillable = ['status'];
+    protected $table = 'persons';
+    protected $fillable = ['name','last_name','age','address','phone','employment'];
     public $timestamps = false;
 
     public function tickets()

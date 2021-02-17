@@ -12,4 +12,9 @@ class Priority extends Model
     protected $table = 'priorities';
     protected $fillable = ['priority'];
     public $timestamps = false;
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }
