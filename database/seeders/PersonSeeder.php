@@ -17,7 +17,7 @@ class PersonSeeder extends Seeder
         DB::table('persons')->insert([
         	'name'=>'juan',
         	'last_name'=>'espinoza',
-        	'age'=>'21',
+        	'birth'=>'2000-01-01',
         	'address'=>"av del desierto #525",
         	'phone'=>"871xxxxxxx",
         	'employment'=>"ingeniero",
@@ -28,7 +28,7 @@ class PersonSeeder extends Seeder
         DB::table('persons')->insert([
             'name'=>'Enrique',
             'last_name'=>'de los santos',
-            'age'=>'21',
+            'birth'=>'2000-01-01',
             'address'=>"cerrada huizachal #78",
             'phone'=>"871xxxxxxx",
             'employment'=>"tecnico",
@@ -39,7 +39,7 @@ class PersonSeeder extends Seeder
         DB::table('persons')->insert([
             'name'=>'angel',
             'last_name'=>'lira',
-            'age'=>'22',
+            'birth'=>'1999-03-15',
             'address'=>"carolinas",
             'phone'=>"871xxxxxxx",
             'employment'=>"secretario",

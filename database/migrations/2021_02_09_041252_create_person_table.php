@@ -17,13 +17,13 @@ class CreatePersonTable extends Migration
             $table->integer('id')->autoIncrement();
             $table->string('name');
             $table->string('last_name');
-            $table->string('age',3)->nullable();
+            $table->date('birth')->nullable();
             $table->string('address');
             $table->string('phone');
             $table->string('employment');
-            $table->biginteger('user_id')->unsigned();;
+            $table->biginteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('Users');
-            $table->biginteger('area_id')->unsigned();;
+            $table->biginteger('area_id')->unsigned();
             $table->foreign('area_id')->references('id')->on('Areas');
 
         });
