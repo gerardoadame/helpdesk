@@ -12,4 +12,14 @@ class Software extends Model
     protected $table = 'software';
     protected $fillable = ['quantity','description',];
     public $timestamps = false;
+
+    public function providers()
+    {
+        return $this->belongsTo(Provider::class);
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
 }

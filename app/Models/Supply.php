@@ -12,4 +12,9 @@ class Supply extends Model
     protected $table = 'supplies';
     protected $fillable = ['name','description','quantity','price_u','date'];
     public $timestamps = false;
+
+    public function provider()
+    {
+        return $this->belongsTo(Provider::class);
+    }
 }

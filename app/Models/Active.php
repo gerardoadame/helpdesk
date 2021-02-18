@@ -12,4 +12,9 @@ class Active extends Model
     protected $table = 'actives';
     protected $fillable = ['equipment','model','features','warranty','serie','stock'];
     public $timestamps = false;
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
 }

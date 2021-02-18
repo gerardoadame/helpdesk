@@ -12,4 +12,9 @@ class Service extends Model
     protected $table = 'services';
     protected $fillable = ['concept','quantity'];
     public $timestamps = false;
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
 }
