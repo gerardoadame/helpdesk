@@ -12,5 +12,9 @@ class Status extends Model
     protected $table = 'statuses';
     protected $fillable = ['status'];
     public $timestamps = false;
-    
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }

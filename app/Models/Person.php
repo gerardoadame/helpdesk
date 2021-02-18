@@ -28,4 +28,10 @@ class Person extends Model
     {
         return $this->hasOne(User::class, "user","id");
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+
+    }
 }

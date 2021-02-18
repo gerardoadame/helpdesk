@@ -13,4 +13,9 @@ class Type_ticket extends Model
     protected $fillable = ['type'];
     public $timestamps = false;
 
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class,'type_id');
+    }
+
 }
