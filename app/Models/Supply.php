@@ -12,4 +12,15 @@ class Supply extends Model
     protected $table = 'supplies';
     protected $fillable = ['name','description','quantity','price_u','date'];
     public $timestamps = false;
+
+    public function provider()
+    {
+        return $this->belongsTo(Provider::class);
+    }
+    #Relacion muchos a muchos (Tabla pivote).
+    public function active()
+    {
+        return $this->belongsToMany(Active::class,'active_supplie')
+        ->withPivot('supplie_id','active_id');
+    }
 }

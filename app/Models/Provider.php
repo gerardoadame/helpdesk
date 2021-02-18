@@ -12,4 +12,14 @@ class Provider extends Model
     protected $table = 'providers';
     protected $fillable = ['company','contact','phone','celphone','address'];
     public $timestamps = false;
+
+    public function software()
+    {
+        return $this->hasMany(Software::class);
+    }
+    
+    public function supply()
+    {
+        return $this->hasMany(Supply::class);
+    }
 }
