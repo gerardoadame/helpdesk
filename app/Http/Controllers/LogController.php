@@ -17,7 +17,7 @@ class LogController extends Controller
         $request->validate([
             'name' => 'required|string',
             'last_name' => 'required|string',
-            'age' => 'required',
+            'birth' => 'required',
             'address' => 'required|string',
             'phone' => 'required|string',
             'employment' => 'required|string',
@@ -31,12 +31,11 @@ class LogController extends Controller
         'email' => $request->email,
         'password' => Hash::make($request->password),
         'type_id'=> $request->type,
-        //'api_token' => Str::random(80),
     	]);
     	$per=Person::create([
     		'name'=>$request->name,
     		'last_name'=>$request->last_name,
-    		'age'=>$request->age,
+    		'birth'=>$request->birth,
     		'address'=>$request->address,
             'phone'=>$request->phone,
             'employment'=>$request->employment,
