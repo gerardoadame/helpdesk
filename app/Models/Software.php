@@ -22,4 +22,10 @@ class Software extends Model
     {
         return $this->belongsTo(Payment::class);
     }
+
+    public function bill()
+    {
+        return $this->belongsToMany(Bill::class,'bill_software')
+        ->withPivot('software_id','bill_id');
+    }
 }

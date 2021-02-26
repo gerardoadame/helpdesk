@@ -17,4 +17,10 @@ class Service extends Model
     {
         return $this->belongsTo(Payment::class);
     }
+
+    public function bill()
+    {
+        return $this->belongsToMany(Bill::class,'bill_service')
+        ->withPivot('service_id','bill_id');
+    }
 }
