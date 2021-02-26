@@ -17,9 +17,6 @@ class LogController extends Controller
         $request->validate([
             'name' => 'required|string',
             'last_name' => 'required|string',
-            'birth' => 'required',
-            'address' => 'required|string',
-            'phone' => 'required|string',
             'employment' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string',
@@ -27,21 +24,21 @@ class LogController extends Controller
             'area' => 'required',
         ]);
 
-        $usr= User::forceCreate([
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'type_id'=> $request->type,
-    	]);
-    	$per=Person::create([
-    		'name'=>$request->name,
-    		'last_name'=>$request->last_name,
-    		'birth'=>$request->birth,
-    		'address'=>$request->address,
-            'phone'=>$request->phone,
-            'employment'=>$request->employment,
-    		'user_id'=>$usr->id,
-            'area_id'=>$request->area,
-    	]);
+        $usr = User::forceCreate([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type_id' => $request->type,
+        ]);
+        $per = Person::create([
+            'name' => $request->name,
+            'last_name' => $request->last_name,
+            'birth' => $request->birth,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'employment' => $request->employment,
+            'user_id' => $usr->id,
+            'area_id' => $request->area,
+        ]);
 
         return response()->json([
             'message' => 'Successfully created user!'
