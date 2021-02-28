@@ -10,7 +10,7 @@ class Ticket extends Model
     use HasFactory;
 
     protected $table = 'tickets';
-    protected $fillable = ['subject','time','created_at','modified_at','description','image','feedback','technical_image'];
+    protected $fillable = ['subject','time','created_at','modified_at','description','image','feedback','technical_image','employed_id','status_id','type_id','priority_id','technical_id'];
     public $timestamps = false;
 
     public function status()
