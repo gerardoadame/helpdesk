@@ -25,5 +25,6 @@ Route::group([
     ], function() {
         Route::get('logout', 'App\Http\Controllers\LogController@logout');
         Route::get('user', 'App\Http\Controllers\LogController@user');
+        Route::post('createTicket','App\Http\Controllers\TicketController@create');
     });
 });
