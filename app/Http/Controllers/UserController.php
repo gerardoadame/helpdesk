@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Illuminate\Database\QueryException;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,26 +14,71 @@ use App\Models\User;
 class UserController extends Controller
 {
     /**
-     * Obtener el objeto User como json
+     * Obtener todos los usuarios
      */
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        return response()->json(User::get());
     }
 
     // funcion "details" le regresa al usuario su informacion de usuario y persona
-    public function detail(Request $req, $id){
-        $usr=User::find($id);
+    public function detail(Request $req){
+        $usr=$req->user();
         // $per=Person::where('user_id',$id)->first();
         $per=$usr->person;
         if(!$per){
             return response()->json(['status' => 404, 'Message' => "user detais not found!"]);
         }
 
-        return response()->json(['status'=>200, 'data' => [$usr, $per]]);
+        return response()->json(
+            $data=[
+                'usuario'=>$usr,
+                'persona'=>$per
+            ],
+            $status=200
+        );
     }
 
-    public function edit(Request $req){
-        //do something
+    // para actualizar otros usuarios
+    public function edit(Request $req,$id){
+        // dd($req);
+        try {
+            $usr=User::findOrFail($id);
+            $per=Person::where('user_id',$id)->first();
+        } catch (QueryException $e) {
+            return response()->json(
+                $data = [
+                    'message' => "user not found!",
+                    'errorInfo'=>$e->errorInfo
+                ],
+                $status=403
+            );
+        }
+
+        // aqi se actulizan datos del usuario
+        $usr->update([
+            'type_id'=>$req-> type,
+            'email'=> $req-> email,
+            'password'=>Hash::make($req->password),
+        ]);
+        // aqi se actualizaran datos de la persona
+        $per->update([
+            'name' => $req->name,
+            'last_name' => $req->last_name,
+            'birth' => $req->birth,
+            'address' => $req->address,
+            'phone' => $req->phone,
+            'employment' => $req->employment,
+            // 'user_id' => $usr->id,
+            'area_id' => $req->area,
+        ]);
+
+        // dd($usr);
+        return response()->json($data=[
+            'message' => "user updated succesfully!",
+            'usuario'=>$usr,
+            'persona'=>$per
+        ],
+        $status=200);
     }
 }

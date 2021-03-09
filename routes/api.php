@@ -32,17 +32,16 @@ Route::group([
       'middleware' => 'auth:api'
     ], function() {
         Route::get('logout', 'App\Http\Controllers\LogController@logout');
-        Route::get('user', 'App\Http\Controllers\UserController@user');
         Route::post('createTicket','App\Http\Controllers\TicketController@create');
 
+        // esta ruta regresa una lista de todos los usuarios
+        Route::get('user', 'App\Http\Controllers\UserController@user');
         // ruta de prueba para informacion del usuario
-        Route::get('users/{id}/detail', 'App\Http\Controllers\UserController@detail');
+        Route::get('user/detail', 'App\Http\Controllers\UserController@detail');
         // ruta de prueba 2
-        Route::get('test2', function () {
-            return response()->json([
-                'status'=>200,
-                'messange' =>"ruta de prueba dentro del middleware"
-            ]);
-        });
+        Route::get('test2', 'App\Http\Controllers\LogController@user');
+
+        // esta ruta es para editar datos de un usuario
+        Route::put('user/edit/{id}', 'App\Http\Controllers\UserController@edit');
     });
 });

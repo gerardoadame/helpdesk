@@ -90,5 +90,20 @@ class LogController extends Controller
         ]);
     }
 
+    /**
+     * Obtener el objeto User como json
+     */
+    public function user(Request $request)
+    {
+        // dd($request);
+        $usr=$request->user();
+        return response()->json(
+            $data=[
+                'user'=>$usr,
+                'person'=>$usr->person,
+            ],
+            $status=200 ,
+        );
+    }
     
 }
