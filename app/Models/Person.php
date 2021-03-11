@@ -29,6 +29,10 @@ class Person extends Model
         return $this->hasOne(User::class, "user","id");
     }
 
+    public function area(){
+        return $this->belongsTo(Area::class,"area_id")
+    }
+
     public function tickets()
     {
         return $this->hasMany(Ticket::class);

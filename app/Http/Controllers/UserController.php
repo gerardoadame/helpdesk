@@ -24,6 +24,7 @@ class UserController extends Controller
     // funcion "details" le regresa al usuario su informacion de usuario y persona
     public function detail(Request $req){
         $usr=$req->user();
+        // dd($usr->type);
         // $per=Person::where('user_id',$id)->first();
         $per=$usr->person;
         if(!$per){
@@ -33,7 +34,8 @@ class UserController extends Controller
         return response()->json(
             $data=[
                 'usuario'=>$usr,
-                'persona'=>$per
+                'persona'=>$per,
+                'tipo'=>$usr->type
             ],
             $status=200
         );
