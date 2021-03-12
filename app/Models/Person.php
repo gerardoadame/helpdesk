@@ -29,9 +29,14 @@ class Person extends Model
         return $this->hasOne(User::class, "user","id");
     }
 
-    public function tickets()
+    public function tickets_employed()
     {
-        return $this->hasMany(Ticket::class);
+        return $this->hasMany(Ticket::class,'employed_id','id');
 
+    }
+
+    public function tickets_technical()
+    {
+        return $this->hasMany(Ticket::class,'technical_id','id');
     }
 }

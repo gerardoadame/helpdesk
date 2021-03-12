@@ -18,3 +18,22 @@ Route::get('/', function () {
 });
 
 Route::get('datos','App\Http\Controllers\Controller@datos');
+
+//Pruebas
+Route::get('/token',function()
+{
+    return csrf_field();
+});
+#Rutas del empleado
+Route::get('view_ticket_emp/{id}','App\Http\Controllers\EmpleadoController@viewTickets');
+
+Route::post('remove','App\Http\Controllers\EmpleadoController@removeTicket');
+
+Route::post('update','App\Http\Controllers\EmpleadoController@updateTicket');
+
+#Rutas del Tecnico
+Route::get('view_ticket_tec/{id}','App\Http\Controllers\TecController@viewTickets');
+Route::post('remove','App\Http\Controllers\TecController@remove');
+Route::post('update','App\Http\Controllers\TecController@updateTicket');
+
+
