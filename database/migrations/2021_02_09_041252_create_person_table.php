@@ -18,8 +18,8 @@ class CreatePersonTable extends Migration
             $table->string('name');
             $table->string('last_name');
             $table->date('birth')->nullable();
-            $table->string('address');
-            $table->string('phone');
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
             $table->string('employment');
             $table->biginteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('Users');
