@@ -19,12 +19,17 @@ Route::group([
 ], function () {
     Route::post('login', 'App\Http\Controllers\LogController@login');
     Route::post('signup', 'App\Http\Controllers\LogController@signUp');
+	
+        
+
+    
 
     Route::group([
-      'middleware' => 'auth:api'
+     // 'middleware' => 'auth:api'
     ], function() {
         Route::get('logout', 'App\Http\Controllers\LogController@logout');
         Route::get('user', 'App\Http\Controllers\LogController@user');
         Route::post('createTicket','App\Http\Controllers\TicketController@create');
+       
     });
 });
