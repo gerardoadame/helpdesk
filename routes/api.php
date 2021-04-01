@@ -32,11 +32,9 @@ Route::group([
       'middleware' => 'auth:api'
     ], function() {
         Route::get('logout', 'App\Http\Controllers\LogController@logout');
-<<<<<<< HEAD
+
         Route::get('user', 'App\Http\Controllers\LogController@user');
         Route::post('createTicket','App\Http\Controllers\EmpleadoController@create');
-=======
-        Route::post('createTicket','App\Http\Controllers\TicketController@create');
 
         // esta ruta regresa una lista de todos los usuarios
         Route::get('user', 'App\Http\Controllers\UserController@user');
@@ -47,6 +45,6 @@ Route::group([
 
         // esta ruta es para editar datos de un usuario
         Route::put('user/edit/{id}', 'App\Http\Controllers\UserController@edit');
->>>>>>> master
+
     });
 });

@@ -18,8 +18,6 @@ class CreateSuppliesTable extends Migration
             $table->string('name',45);
             $table->text('description')->nullable();
             $table->integer('quantity');
-            $table->float('price_u');
-            $table->date('date')->nullable();
             $table->integer('provider_id');
             $table->foreign('provider_id')->references('id')->on('providers');
         });

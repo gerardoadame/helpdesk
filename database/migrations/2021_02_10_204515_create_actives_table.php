@@ -15,7 +15,7 @@ class CreateActivesTable extends Migration
     {
         Schema::create('actives', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
-            $table->text('equipment');
+            $table->string('equipment',20);
             $table->string('model',20);
             $table->text('features');
             $table->date('purchase');

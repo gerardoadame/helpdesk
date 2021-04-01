@@ -13,7 +13,7 @@ class TecController extends Controller
         $tecnico = Person::findOrfail($request->id);
         $tecnico->tickets_technical;
 
-        dd($tecnico->tickets_technical);
+        return $tecnico->tickets_technical;
     }
     function remove(Request $r)
     {
@@ -40,5 +40,10 @@ class TecController extends Controller
         $t = Ticket::findOrfail($request->id);
         return $t;
     }
+
+    // function create_bill()
+    // {
+    //     $t;
+    // }
 
 }

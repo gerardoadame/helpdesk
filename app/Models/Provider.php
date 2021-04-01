@@ -22,4 +22,14 @@ class Provider extends Model
     {
         return $this->hasMany(Supply::class);
     }
+
+    public function active()
+    {
+        return $this->hasMany(Active::class);
+    }
+
+    public function service()
+    {
+        return $this->hasMany(Service::class);
+    }
 }
