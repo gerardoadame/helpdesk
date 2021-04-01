@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{ LogController, TicketController, UserController };
+use App\Http\Controllers\{LogController, TicketController, UserController};
 
 /*
 |------------------------------------------------------------------------------|
@@ -17,20 +17,10 @@ use App\Http\Controllers\{ LogController, TicketController, UserController };
 Route::prefix('auth')->group(function () {
     Route::post('login', [LogController::class, 'login']);
     //Route::post('signup', [LogController::class, 'signUp']); No contemplado
-    Route::get('logout', [LogController::class, 'logout']);
 });
 
-    Route::group([
-      'middleware' => 'auth:api'
-    ], function() {
-        Route::get('logout', 'App\Http\Controllers\LogController@logout');
-
-        Route::get('user', 'App\Http\Controllers\LogController@user');
-        Route::post('createTicket','App\Http\Controllers\EmpleadoController@create');
-    });
-
 Route::middleware(['auth:api'])->group(function () {
-
+    Route::get('logout', [LogController::class, 'logout']);
 
     Route::prefix('users')->group(function () {
         // Lista de usuarios
@@ -40,13 +30,9 @@ Route::middleware(['auth:api'])->group(function () {
         Route::put('edit/{id}', [UserController::class, 'edit']);
     });
 
-
-        // esta ruta es para editar datos de un usuario
-        Route::put('user/edit/{id}', 'App\Http\Controllers\UserController@edit');
-
-
     Route::prefix('tickets')->group(function () {
         Route::post('create', [TicketController::class, 'create']);
-
     });
+
+    //Route::post('createTicket', 'App\Http\Controllers\EmpleadoController@create');
 });
