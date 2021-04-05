@@ -26,7 +26,7 @@ Route::middleware(['auth:api'])->group(function () {
         // Lista de usuarios
         Route::get('', [LogController::class, 'user']);
         // Info. personal de usuario
-        Route::get('detail', [UserController::class, 'detail']); // /users/{id}
+        Route::get('detail', [UserController::class, 'detail']);
         Route::put('edit/{id}', [UserController::class, 'edit']);
     });
 
