@@ -20,7 +20,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware(['auth:api'])->group(function () {
-    Route::get('logout', [LogController::class, 'logout']);
+    Route::get('auth/logout', [LogController::class, 'logout']);
 
     Route::prefix('users')->group(function () {
         // Lista de usuarios
