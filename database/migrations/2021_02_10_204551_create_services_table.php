@@ -16,7 +16,6 @@ class CreateServicesTable extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
             $table->text('concept');
-            $table->integer('quantity');
             $table->integer('provider_id');
             $table->integer('payment_id');
             $table->foreign('provider_id')->references('id')->on('providers');

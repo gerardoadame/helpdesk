@@ -30,4 +30,10 @@ class Bill extends Model
         return $this->belongsToMany(Active::class,'active_bill')
         ->withPivot('bill_id','active_id');
     }
+
+    public function supply()
+    {
+        return $this->belongsToMany(Supply::class,'bill_supplie')
+        ->withPivot('bill_id','supplie_id');
+    }
 }

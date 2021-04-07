@@ -22,20 +22,8 @@ class UserController extends Controller
     }
 
     // funcion "details" le regresa al usuario su informacion de usuario y persona
-    public function detail(Request $req){
-        try {
-            $usr=$req->user();
-        } catch (QueryException $e) {
-            return response()->json(
-                $data = [
-                    'message' => "Unauthorized",
-                    'errorInfo'=>$e->errorInfo
-                ],
-                $status=401
-            );
-        }
-        
-        
+    /*public function detail(Request $req){
+        $usr=$req->user();
         // dd($usr->type);
         // $per=Person::where('user_id',$id)->first();
         $per=$usr->person;
@@ -52,6 +40,12 @@ class UserController extends Controller
             ],
             $status=200
         );
+    }*/
+
+    public function detail(Request $request) {
+        $user = $request->user()->with(['person', 'type'])->first();
+
+        return response()->json($user, 200);
     }
 
     // para actualizar otros usuarios

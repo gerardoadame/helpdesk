@@ -15,7 +15,6 @@ class CreateSoftwareTable extends Migration
     {
         Schema::create('software', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
-            $table->integer('quantity');
             $table->text('description');
             $table->integer('provider_id');
             $table->integer('payment_id');

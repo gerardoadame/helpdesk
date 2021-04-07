@@ -29,4 +29,8 @@ class Active extends Model
         return $this->belongsToMany(Bill::class,'active_bill')
         ->withPivot('active_id','bill_id');
     }
+    public function provider()
+    {
+        return $this->belongsTo(Provider::class);
+    }
 }

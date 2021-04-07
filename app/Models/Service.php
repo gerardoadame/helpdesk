@@ -23,4 +23,8 @@ class Service extends Model
         return $this->belongsToMany(Bill::class,'bill_service')
         ->withPivot('service_id','bill_id');
     }
+    public function provider()
+    {
+        return $this->belongsTo(Provider::class);
+    }
 }
