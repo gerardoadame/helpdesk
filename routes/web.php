@@ -17,4 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('datos','App\Http\Controllers\Controller@datos');
+Route::get('files', function(){
+    return view('upload');
+});
