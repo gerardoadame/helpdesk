@@ -23,10 +23,23 @@ class UserController extends Controller
 
     // funcion "details" le regresa al usuario su informacion de usuario y persona
     public function detail(Request $req){
-        $usr=$req->user();
+        try {
+            $usr=$req->user();
+        } catch (QueryException $e) {
+            return response()->json(
+                $data = [
+                    'message' => "Unauthorized",
+                    'errorInfo'=>$e->errorInfo
+                ],
+                $status=401
+            );
+        }
+        
+        
         // dd($usr->type);
         // $per=Person::where('user_id',$id)->first();
         $per=$usr->person;
+        // dd($per);
         if(!$per){
             return response()->json(['status' => 404, 'Message' => "user detais not found!"]);
         }
@@ -82,5 +95,9 @@ class UserController extends Controller
             'persona'=>$per
         ],
         $status=200);
+    }
+
+    public function test2(Request $req){
+        return "tupu";
     }
 }

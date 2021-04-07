@@ -26,11 +26,11 @@ class Person extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, "user","id");
+        return $this->hasOne(User::class, "user_id", "id");
     }
 
     public function area(){
-        return $this->belongsTo(Area::class,"area_id")
+        return $this->belongsTo(Area::class,"area_id");
     }
 
     public function tickets()

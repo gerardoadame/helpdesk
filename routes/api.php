@@ -26,12 +26,7 @@ Route::group([
     
 
     // ruta de prueba 1
-    Route::get('test1', function () {
-        return response()->json([
-            'status'=>200,
-            'messange' =>"ruta de prueba fuera del middleware"
-        ]);
-    });
+    Route::get('test1', 'App\Http\Controllers\UserController@test2')->name('test1');
 
     Route::group([
     'middleware' => 'auth:api'
@@ -46,7 +41,7 @@ Route::group([
         // ruta de prueba para informacion del usuario
         Route::get('user/detail', 'App\Http\Controllers\UserController@detail');
         // ruta de prueba 2
-        Route::get('test2', 'App\Http\Controllers\LogController@user');
+        Route::get('test2', 'App\Http\Controllers\UserController@test2')->name('test2');
 
         // esta ruta es para editar datos de un usuario
         Route::put('user/edit/{id}', 'App\Http\Controllers\UserController@edit');
