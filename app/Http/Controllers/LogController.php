@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Illuminate\Database\QueryException;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\Person;
 use App\Models\User;
+use PhpParser\Node\Stmt\TryCatch;
 
 class LogController extends Controller
 {
@@ -24,21 +26,31 @@ class LogController extends Controller
             'area' => 'required',
         ]);
 
-        $usr = User::forceCreate([
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'type_id' => $request->type,
-        ]);
-        $per = Person::create([
-            'name' => $request->name,
-            'last_name' => $request->last_name,
-            'birth' => $request->birth,
-            'address' => $request->address,
-            'phone' => $request->phone,
-            'employment' => $request->employment,
-            'user_id' => $usr->id,
-            'area_id' => $request->area,
-        ]);
+        try {
+            $usr = User::forceCreate([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'type_id' => $request->type,
+            ]);
+            $per = Person::create([
+                'name' => $request->name,
+                'last_name' => $request->last_name,
+                'birth' => $request->birth,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'employment' => $request->employment,
+                'user_id' => $usr->id,
+                'area_id' => $request->area,
+            ]);
+        } catch (QueryException $e) {
+            return response()->json(
+                $data = [
+                    'message' => "error al registrar el usuario",
+                    'errorInfo'=>$e->errorInfo
+                ],
+                $status=403
+            );
+        }
 
         return response()->json([
             'message' => 'Successfully created user!'
@@ -59,9 +71,9 @@ class LogController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!Auth::attempt($credentials))
-            return response()->json([
+            return response()->json($data=[
                 'message' => 'Unauthorized'
-            ], 401);
+            ], $status=401);
 
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
