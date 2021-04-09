@@ -30,6 +30,7 @@ class LogController extends Controller
             $usr = User::forceCreate([
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'admin'=>$request->admin,
                 'type_id' => $request->type,
             ]);
             $per = Person::create([
