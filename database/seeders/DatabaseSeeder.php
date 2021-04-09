@@ -19,12 +19,19 @@ class DatabaseSeeder extends Seeder
     		'areas',
     		'users',
     		'persons',
+            'statuses',
+            'priorities',
+            'type_tickets',
     	]);
+
         // \App\Models\User::factory(10)->create();
         $this->call(UserTypeSeeder::class);
         $this->call(AreaSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(PersonSeeder::class);
+        $this->call(StatusSeeder::class);
+        $this->call(PrioritySeeder::class);
+        $this->call(Type_ticketSeeder::class);
     }
 
     protected function truncateTables(array $tables){

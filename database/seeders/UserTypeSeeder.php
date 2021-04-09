@@ -20,7 +20,7 @@ class UserTypeSeeder extends Seeder
         ]);
 
         DB::table('user_type')->insert([
-        	'type'=>'usuario',
+        	'type'=>'empleado',
         ]);
     }
 }

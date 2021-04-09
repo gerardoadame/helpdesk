@@ -21,5 +21,22 @@ class AreaSeeder extends Seeder
         DB::table('areas')->insert([
         	'name'=>'administracion',
         ]);
+
+        DB::table('areas')->insert([
+        	'name'=>'recursos humanos',
+        ]);
+
+        DB::table('areas')->insert([
+        	'name'=>'contaduria',
+        ]);
+
+        DB::table('areas')->insert([
+        	'name'=>'produccion',
+        ]);
+
+        DB::table('areas')->insert([
+        	'name'=>'marketing',
+        ]);
+        
     }
 }
