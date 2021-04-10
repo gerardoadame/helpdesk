@@ -20,6 +20,7 @@ Route::get('/', function () {
 Route::get('files', function(){
     return view('upload');
 });
+
 Route::get('datos','App\Http\Controllers\Controller@datos');
 
 //Pruebas

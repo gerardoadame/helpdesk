@@ -92,6 +92,14 @@ class UserController extends Controller
     }
 
     public function test2(Request $req){
-        return "tupu";
+        $req->file('avatar')->store('public');
+        
+        return view('upload');
+        // return response()->json(
+        //     $data = [
+        //         'message' => "imagen guardada!",
+        //     ],
+        //     $status=200
+        // );
     }
 }

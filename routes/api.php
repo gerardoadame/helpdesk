@@ -16,8 +16,13 @@ use App\Http\Controllers\{LogController, TicketController, UserController};
 
 Route::prefix('auth')->group(function () {
     Route::post('login', [LogController::class, 'login']);
-    //Route::post('signup', [LogController::class, 'signUp']); No contemplado
+     //No contemplado
+    Route::post('signup', [LogController::class, 'signUp']);
+    
 });
+
+// ruta de prueba 1
+Route::post('test1', 'App\Http\Controllers\UserController@test2')->name('test1');
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('logout', [LogController::class, 'logout']);
@@ -35,4 +40,7 @@ Route::middleware(['auth:api'])->group(function () {
     });
 
     //Route::post('createTicket', 'App\Http\Controllers\EmpleadoController@create');
+
+    // ruta de prueba 2
+    Route::get('test2', [UserController::class, 'test2'])->name('test2');
 });
