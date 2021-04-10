@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Help extends Model
 {
     use HasFactory;
+    protected $table = 'helps';
+    protected $fillable = ['title','location'];
+    public $timestamps = false;
 }

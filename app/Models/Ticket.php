@@ -10,8 +10,8 @@ class Ticket extends Model
     use HasFactory;
 
     protected $table = 'tickets';
-    protected $fillable = ['subject','time','created_at','modified_at','description','client_image','feedback','technical_image','employed_id','status_id','type_id','priority_id','technical_id'];
-    public $timestamps = false;
+    protected $fillable = ['subject','time','description','image','created_at','modified_at','employed_id','status_id','type_id','priority_id','technical_id','score_usr','score_tech'];
+    // public $timestamps = false;
 
     public function status()
     {
@@ -22,7 +22,7 @@ class Ticket extends Model
     {
         return $this->belongsTo(Priority::class);
     }
-    
+
     public function types()
     {
         return $this->belongsTo(Type_ticket::class);
@@ -31,5 +31,15 @@ class Ticket extends Model
     public function person()
     {
         return $this->belongsTo(Person::class);
+    }
+
+    public function reply()
+    {
+        return $this->hasMany(Reply::class);
+    }
+
+    public function comment()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

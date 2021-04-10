@@ -10,7 +10,7 @@ class Active extends Model
     use HasFactory;
 
     protected $table = 'actives';
-    protected $fillable = ['equipment','model','features','warranty','serie','stock'];
+    protected $fillable = ['equipment','model','features','warranty','serie','stock','provider_id','payment_id'];
     public $timestamps = false;
 
     public function payment()

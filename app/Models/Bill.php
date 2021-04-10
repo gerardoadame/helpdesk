@@ -10,7 +10,7 @@ class Bill extends Model
     use HasFactory;
 
     protected $table = 'bills';
-    protected $fillable = ['name','price','begin','end','location'];
+    protected $fillable = ['name','price','begin','end','location','concept'];
     public $timestamps = false;
 
     public function service()

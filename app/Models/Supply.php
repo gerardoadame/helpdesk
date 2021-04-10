@@ -10,7 +10,7 @@ class Supply extends Model
     use HasFactory;
 
     protected $table = 'supplies';
-    protected $fillable = ['name','description','quantity','price_u','date'];
+    protected $fillable = ['name','description','quantity','provider_id'];
     public $timestamps = false;
 
     public function provider()

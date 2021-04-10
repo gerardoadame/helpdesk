@@ -10,7 +10,7 @@ class Service extends Model
     use HasFactory;
 
     protected $table = 'services';
-    protected $fillable = ['concept','quantity'];
+    protected $fillable = ['concept','provider_id','payment_id'];
     public $timestamps = false;
 
     public function payment()
