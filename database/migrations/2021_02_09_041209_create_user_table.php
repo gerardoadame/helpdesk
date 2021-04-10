@@ -21,6 +21,7 @@ class CreateUserTable extends Migration
             $table->timestamps();
             $table->biginteger('type_id')->unsigned();
             $table->foreign('type_id')->references('id')->on('user_type');
+            $table->text('avatar')->default('default.png');
         });
     }
 
