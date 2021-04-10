@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class History extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'histories';
-    protected $fillable = ['supplie_id','active_id','date'];
+    protected $fillable = ['date','supplie_id','active_id'];
     public $timestamps = false;
 }

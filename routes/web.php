@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TicketController;
+use App\Models\Ticket;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,5 +41,11 @@ Route::post('update_emp','App\Http\Controllers\EmpleadoController@updateTicket')
 Route::get('view_ticket_tec','App\Http\Controllers\TecController@viewTickets');
 Route::post('remove','App\Http\Controllers\TecController@remove');
 Route::post('update_tec','App\Http\Controllers\TecController@updateTicket');
+
+#Rutas de tickets
+Route::post('obtener',[TicketController::class,'index']);
+Route::post('quantity',[TicketController::class,'quantity']);
+Route::post('create',[TicketController::class,'create']);
+
 
 

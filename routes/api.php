@@ -25,7 +25,7 @@ Route::prefix('auth')->group(function () {
 Route::post('test1', 'App\Http\Controllers\UserController@test2')->name('test1');
 
 Route::middleware(['auth:api'])->group(function () {
-    Route::get('logout', [LogController::class, 'logout']);
+    Route::get('auth/logout', [LogController::class, 'logout']);
 
     Route::prefix('users')->group(function () {
         // Lista de usuarios
