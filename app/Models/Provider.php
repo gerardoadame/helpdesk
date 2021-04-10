@@ -10,7 +10,7 @@ class Provider extends Model
     use HasFactory;
 
     protected $table = 'providers';
-    protected $fillable = ['company','contact','phone','celphone','address'];
+    protected $fillable = ['company','contact','phone','cellphone','address'];
     public $timestamps = false;
 
     public function software()
