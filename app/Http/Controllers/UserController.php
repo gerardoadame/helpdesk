@@ -42,7 +42,9 @@ class UserController extends Controller
     }*/
 
     public function detail(Request $request) {
-        $user = $request->user()->with(['person', 'type'])->first();
+        $user = $request->user();
+        $user->person = $user->person()->first();
+        $user->type = $user->type()->first();
 
         return response()->json($user, 200);
     }
