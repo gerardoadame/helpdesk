@@ -31,11 +31,11 @@ class TicketController extends Controller
         try {
             Ticket::create([
                 'subject' => $request->get('subject'),
-                'time' => $request->get('time'),
+                'estimation' => $request->get('estimation'),
                 'description' => $request->get('description'),
                 'image' => $request->get('image'),
                 'employed_id' => $request->get('employed_id'),
-                'status_id' => $request->get('status_id'),
+                'status_id' => 3, // abierto = status by default when created
                 'type_id' => $request->get('type_id'),
                 'priority_id' => $request->get('priority_id'),
                 'technical_id' => $request->get('technical_id'),
@@ -88,7 +88,7 @@ class TicketController extends Controller
             // cambiar los findOrfail para regresar la informacion de error
             $ticket->update([
                 'subject'=>$request->subject,
-                'time'=>$request->time,
+                'estimation'=>$request->estimation,
                 'description'=>$request->description,
                 'image'=>$request->image,
                 'status_id'=>$request->status,
