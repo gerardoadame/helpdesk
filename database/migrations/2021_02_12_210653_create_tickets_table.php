@@ -17,7 +17,7 @@ class CreateTicketsTable extends Migration
             $table->integer('id')->autoIncrement();
             $table->string('subject',40);
             $table->timestamps();
-            $table->time('time')->nullable();
+            $table->dateTime('estimation')->nullable();
             $table->text('description');
             $table->text('image')->nullable();
             $table->integer('score_usr')->nullable();
