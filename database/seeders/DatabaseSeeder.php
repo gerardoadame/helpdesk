@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
             'statuses',
             'priorities',
             'type_tickets',
+            'payments',
+            'providers',
+            'actives',
     	]);
 
         // \App\Models\User::factory(10)->create();
@@ -32,6 +35,9 @@ class DatabaseSeeder extends Seeder
         $this->call(StatusSeeder::class);
         $this->call(PrioritySeeder::class);
         $this->call(Type_ticketSeeder::class);
+        $this->call(PaymentSeeder::class);
+        $this->call(ProviderSeeder::class);
+        $this->call(ActiveSeeder::class);
     }
 
     protected function truncateTables(array $tables){
