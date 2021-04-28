@@ -42,7 +42,8 @@ class UserController extends Controller
         );
     }*/
 
-    public function detail(Request $request) {
+    public function detail(Request $request)
+    {
         $user = $request->user();
         $user->person = $user->person()->first();
         $user->type = $user->type()->first();
@@ -51,26 +52,33 @@ class UserController extends Controller
     }
 
     // para actualizar otros usuarios
-    public function edit(Request $req,$id){
+    // public function edit(Request $req,$id){
+    public function edit(Request $req)
+    {
         // dd($req);
         try {
-            $usr=User::findOrFail($id);
-            $per=Person::where('user_id',$id)->first();
+            // $usr=User::findOrFail($id);
+            $usr = $req->user();
+            // dd($usr->id);
+            $per = Person::where('user_id', $usr->id)->first();
         } catch (QueryException $e) {
             return response()->json(
                 $data = [
                     'message' => "user not found!",
-                    'errorInfo'=>$e->errorInfo
+                    'errorInfo' => $e->errorInfo
                 ],
-                $status=403
+                $status = 403
             );
         }
 
         // aqi se actulizan datos del usuario
         $usr->update([
-            'type_id'=>$req-> type,
-            'email'=> $req-> email,
-            'password'=>Hash::make($req->password),
+            'email' => $req->email,
+            'password' => Hash::make($req->password),
+            'admin' => $req->admin,
+            // 'avatar'=> $req->avatar,
+            'avatar' => $req->file('avatar')->store('public'),
+            'type_id' => $req->type,
         ]);
         // aqi se actualizaran datos de la persona
         $per->update([
@@ -85,17 +93,20 @@ class UserController extends Controller
         ]);
 
         // dd($usr);
-        return response()->json($data=[
-            'message' => "user updated succesfully!",
-            'usuario'=>$usr,
-            'persona'=>$per
-        ],
-        $status=200);
+        return response()->json(
+            $data = [
+                'message' => "user updated succesfully!",
+                'usuario' => $usr,
+                'persona' => $per
+            ],
+            $status = 200
+        );
     }
 
-    public function test2(Request $req){
+    public function test2(Request $req)
+    {
         $req->file('avatar')->store('public');
-        
+
         return view('upload');
         // return response()->json(
         //     $data = [
@@ -103,5 +114,26 @@ class UserController extends Controller
         //     ],
         //     $status=200
         // );
+    }
+
+    Public function emplist(Request $request){
+        // lista de empleados
+        $e=User::where(['type_id'=>2])->get();
+        return response()->json(
+            $data=[
+                'empleados'=>[$e],
+            ],
+            $status=200
+        );
+    }
+    Public function teclist(Request $request){
+        // lista de tecnicos
+        $t=User::where(['type_id'=>1])->get();
+        return response()->json(
+            $data=[
+                'tecnicos'=>[$t]
+            ],
+            $status=200
+        );
     }
 }
