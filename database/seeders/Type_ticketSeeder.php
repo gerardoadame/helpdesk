@@ -33,6 +33,10 @@ class Type_ticketSeeder extends Seeder
         DB::table('type_tickets')->insert([
             'type'=>'hardware'
         ]);
+
+        DB::table('type_tickets')->insert([
+            'type'=>'otros'
+        ]);
         
     }
 }
