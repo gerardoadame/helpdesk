@@ -5,42 +5,45 @@ namespace App\Http\Controllers;
 use App\Models\{Ticket, Person, User};
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Carbon;
 
 class TicketController extends Controller
 {
-    // function create(Request $request)
-    // {
-    //     Ticket::create([
-    //         'subject' => $request->get('subject'),
-    //         'time' => $request->get('time'),
-    //         'description' => $request->get('description'),
-    //         'client_image' => $request->get('client_image'),
-    //         'feedback' => $request->get('feedback'),
-    //         'technical_image' => $request->get('technical_image'),
-    //         'employed_id' => $request->get('employed_id'),
-    //         'status_id' => $request->get('status_id')==0,
-    //         'type_id' => $request->get('type_id'),
-    //         'priority_id' => $request->get('priority_id')==0,
-    //         'technical_id' => $request->get('technical_id')
-    //     ]);
 
-    //     return "Successful";
-    // }
-    function create(Request $request)
-    {
+    function create(Request $request) {
         try {
+            // Validating data
+            $request->validate([
+                'subject' => 'required',
+                'description' => 'required',
+                'image' => 'file|image',
+                'employed_id' => 'required|integer',
+                'technical_id' => 'required|integer',
+                'type_id' => 'required|integer',
+                'priority_id' => 'required|integer'
+            ]);
+
+            $estimation = ($request->get('estimation') == 'null') ? null : 'null';
+
+            // Saving image file
+            $image = $request->file('image');
+            $fileName = time().'.'.$image->getClientOriginalExtension();
+
+            $image->storeAs('tickets', $fileName);
+
+            // Ticket create
+            $imagePath = "tickets/".$fileName;
+
             Ticket::create([
                 'subject' => $request->get('subject'),
-                'time' => $request->get('time'),
+                'estimation' => $estimation,
                 'description' => $request->get('description'),
-                'image' => $request->get('image'),
+                'image' => $imagePath,
                 'employed_id' => $request->get('employed_id'),
-                'status_id' => $request->get('status_id'),
+                'status_id' => 3, // abierto = status by default when created
                 'type_id' => $request->get('type_id'),
                 'priority_id' => $request->get('priority_id'),
-                'technical_id' => $request->get('technical_id'),
-                'score_usr' => $request->get('score_usr'),
-                'score_tech' => $request->get('score_tech')
+                'technical_id' => $request->get('technical_id')
             ]);
         } catch (QueryException $e) {
             return response()->json(
@@ -88,7 +91,7 @@ class TicketController extends Controller
             // cambiar los findOrfail para regresar la informacion de error
             $ticket->update([
                 'subject'=>$request->subject,
-                'time'=>$request->time,
+                'estimation'=>$request->estimation,
                 'description'=>$request->description,
                 'image'=>$request->image,
                 'status_id'=>$request->status,
@@ -114,37 +117,12 @@ class TicketController extends Controller
             $status=200
         );
 
-        
     }
     function index(Request $request)
     //lista de tickets
     {
         try {
-            //Guardamos el email del usuario en la variable
-            $usuario = User::findOrfail($request->email);
-            // dd($usuario->type);
-            //Sacamos el tipo de usuario con las relaciones que tiene el modelo del usuario hacia el tipo de usuario
-            if ($usuario->type->type == 'Empleado') {
-                // dd("Soy empleado");
-                // dd($usuario->person->id);
-                //Sacamos la persona al que le pertenece el usuario mediante la relacion del usuario.
-                //para asi sacar los tickets que ha levantado
-                $ticket = Ticket::where('employed_id', $usuario->person->id)->get();
-                // dd($ticket->where('status_id', $request->status));
-                //Sacamos del request el status del ticket, filtandolo por status
-                if ($request->status) {
-                    return $ticket->where('status_id', $request->status);
-                }
-                return $ticket;
-            } else {
-                $ticket = Ticket::where('technical_id', $usuario->person->id)->get();
-
-                if ($request->status) {
-                    return $ticket->where('status_id', $request->status);
-                }
-
-                return $ticket;
-            }
+            //pendiente
         } catch (QueryException $e) {
             return response()->json(
                 $response = [
@@ -155,75 +133,77 @@ class TicketController extends Controller
             );
         }
     }
-    //traer cantidades de tickets (tecnico)
+    //traer cantidades de tickets (tecnico / admin)
     function quantity(Request $request)
     {
+        try{
+            $almacen = [];
+            $usuario = User::findOrfail($request->id);
+            // $tickets = Ticket::where('technical_id', $usuario->person->id)->get();
+            $date= Carbon::now();
+            $month = $date->format('m');
+            $year = $date->format('Y');
+            if ($usuario->admin == 1) {
 
-        $usuario = User::findOrfail($request->id);
-        if ($usuario->admin == 1) {
-            if ($request->start) {
-                $ticket = Ticket::where('technical_id', $usuario->person->id)->get();
-                $t = $ticket->whereBetween('created_at', [$request->start . "00:00:00", $request->end . "23:59:59"]);
+                if ($request->show_global == True) {
+                    $tickets = Ticket::get();
 
-                $almacen = [];
-                $total['Total'] = count($t);
-                $abiertos['Abiertos'] = count($t->where('status_id', 3));
-                $cerrados['Cerrados'] = count($t->where('status_id', 1));
-                $proceso['EnProceso'] = count($t->where('status_id', 2));
-                $atrasados['Atrasados'] = count($t->where('status_id', 4));
-                array_push($almacen, $total, $abiertos, $cerrados, $proceso, $atrasados);
-                return $almacen;
+                    switch ($request->filter) {
+                        case 'S':
+                            $start = new Carbon('last sunday');
+                            $end = new Carbon('next saturday');
+                            $tickets = Ticket::whereBetween('created_at',[$start,$end])->whereMonth('created_at',$month)->get();
+                            break;
+                        case 'M':
+                            $tickets = Ticket::whereMonth('created_at', $month)->get();
+                            break;
+                        case 'Y':
+                            $tickets = Ticket::whereYear('created_at', $year)->get();
+                            break;
+                        case 'P':
+                            $tickets = Ticket::whereBetween('created_at', [$request->start_date . "00:00:00", $request->end_date . "23:59:59"])->get();
+                            break;
+                    }
+                    $almacen['Atrasados'] = count($tickets->where('status_id', 4));
+                    $almacen['Abiertos']  = count($tickets->where('status_id', 3));
+                    $almacen['EnProceso'] = count($tickets->where('status_id', 2));
+                    $almacen['Cerrados']  = count($tickets->where('status_id', 1));
+                    return $almacen;
+                }
+
+            }
+            switch ($request->filter) {
+                case 'S':
+                    $start = new Carbon('last sunday');
+                    $end = new Carbon('next saturday');
+                    $tickets = Ticket::whereBetween('created_at',[$start,$end])->whereMont('created_at',$month)->where('technical_id', $usuario->person->id)->get();
+                    break;
+                case 'M':
+                    $tickets = Ticket::whereMonth('created_at', $month)->where('technical_id', $usuario->person->id)->get();
+                    break;
+                case 'Y':
+                    $tickets = Ticket::whereYear('created_at', $year)->where('technical_id', $usuario->person->id)->get();
+                    break;
+                case 'P':
+                    $tickets = Ticket::whereBetween('created_at', [$request->start_date . "00:00:00", $request->end_date . "23:59:59"])->where('technical_id', $usuario->person->id)->get();
+                    break;
             }
 
-            $t = Ticket::get();
-            $almacen = [];
-            $total['Total'] = count($t);
-            $abiertos['Abiertos'] = count($t->where('status_id', 3));
-            $cerrados['Cerrados'] = count($t->where('status_id', 1));
-            $proceso['EnProceso'] = count($t->where('status_id', 2));
-            $atrasados['Atrasados'] = count($t->where('status_id', 4));
-            array_push($almacen, $total, $abiertos, $cerrados, $proceso, $atrasados);
+            $almacen['Atrasados'] = count($tickets->where('status_id', 4));
+            $almacen['Abiertos']  = count($tickets->where('status_id', 3));
+            $almacen['EnProceso'] = count($tickets->where('status_id', 2));
+            $almacen['Cerrados']  = count($tickets->where('status_id', 1));
             return $almacen;
-        } else {
-            $t = Ticket::where('technical_id', $usuario->person->id)->get();
-            $almacen = [];
-            $total['Total'] = count($t);
-            $abiertos['Abiertos'] = count($t->where('status_id', 3));
-            $cerrados['Cerrados'] = count($t->where('status_id', 1));
-            $proceso['EnProceso'] = count($t->where('status_id', 2));
-            $atrasados['Atrasados'] = count($t->where('status_id', 4));
-            array_push($almacen, $total, $abiertos, $cerrados, $proceso, $atrasados);
-            return $almacen;
+        }catch(QueryException $e)
+        {
+            return response()->json(
+                $data=[
+                    "message" => "ERROR not found",
+                    "errorInfo" => $e->errorInfo,
+                ],
+                $status=200
+            );
         }
-
-        //user_id
-        //startdate
-        //enddate
-        // $usuario = User::findOrfail($request->id);
-        // if($usuario->admin == 1)
-        // {
-        //     $ticket = Ticket::get();
-        //     dd($ticket);
-        // }
-        // else
-        // {
-        //     $almacen = [];
-
-        //     $t = Ticket::where('technical_id', $usuario->person->id)->get();
-
-        //     if ($request->startdate and $request->enddate) {
-        //         $t = Ticket::where('created_at', $request->startdate and 'created_at', $request->enddate)->get();
-        //         dd($t);
-        //     }
-
-        //     $almacen['Total'] = count($t);
-        //     $almacen['Abiertos'] = count($t->where('status_id',3));
-        //     $almacen['Cerrados'] = count($t->where('status_id',1));
-        //     $almacen['EnProceso'] = count($t->where('status_id',2));
-        //     $almacen['Atrasados'] = count($t->where('status_id',4));
-        //     dd($almacen);
-        // }
-
 
     }
 }

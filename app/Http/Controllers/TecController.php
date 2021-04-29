@@ -25,7 +25,7 @@ class TecController extends Controller
     {
         $ticket = Ticket::findOrfail($request->id);
         $ticket->update([
-            'time' => request('time'),
+            'estimation' => request('estimation'),
             'feedback' =>request('feedback'),
             'priority' => request('priority'),
             'technical_image' => request('tecnico'),

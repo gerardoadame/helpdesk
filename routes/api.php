@@ -47,6 +47,7 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('create', [TicketController::class, 'create']);
         Route::get('view/{id}', [TicketController::class, 'viewOne']);
         Route::put('edit/{id}', [TicketController::class, 'edit']);
+        Route::post('quantity',[TicketController::class],'quantity');
     });
 
     // ruta de prueba 2
