@@ -38,9 +38,7 @@ class TicketController extends Controller
                 'status_id' => 3, // abierto = status by default when created
                 'type_id' => $request->get('type_id'),
                 'priority_id' => $request->get('priority_id'),
-                'technical_id' => $request->get('technical_id'),
-                'score_usr' => $request->get('score_usr'),
-                'score_tech' => $request->get('score_tech')
+                'technical_id' => $request->get('technical_id')
             ]);
         } catch (QueryException $e) {
             return response()->json(
