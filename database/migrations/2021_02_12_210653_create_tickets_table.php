@@ -16,8 +16,8 @@ class CreateTicketsTable extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
             $table->string('subject',40);
-            $table->timestamp(0)->nullable(false);
-            $table->time('time')->nullable();
+            $table->timestamps();
+            $table->dateTime('estimation')->nullable();
             $table->text('description');
             $table->text('image')->nullable();
             $table->integer('score_usr')->nullable();

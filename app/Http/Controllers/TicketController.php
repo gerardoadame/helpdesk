@@ -9,39 +9,41 @@ use Illuminate\Support\Carbon;
 
 class TicketController extends Controller
 {
-    // function create(Request $request)
-    // {
-    //     Ticket::create([
-    //         'subject' => $request->get('subject'),
-    //         'time' => $request->get('time'),
-    //         'description' => $request->get('description'),
-    //         'client_image' => $request->get('client_image'),
-    //         'feedback' => $request->get('feedback'),
-    //         'technical_image' => $request->get('technical_image'),
-    //         'employed_id' => $request->get('employed_id'),
-    //         'status_id' => $request->get('status_id')==0,
-    //         'type_id' => $request->get('type_id'),
-    //         'priority_id' => $request->get('priority_id')==0,
-    //         'technical_id' => $request->get('technical_id')
-    //     ]);
 
-    //     return "Successful";
-    // }
-    function create(Request $request)
-    {
+    function create(Request $request) {
         try {
+            // Validating data
+            $request->validate([
+                'subject' => 'required',
+                'description' => 'required',
+                'image' => 'file|image',
+                'employed_id' => 'required|integer',
+                'technical_id' => 'required|integer',
+                'type_id' => 'required|integer',
+                'priority_id' => 'required|integer'
+            ]);
+
+            $estimation = ($request->get('estimation') == 'null') ? null : 'null';
+
+            // Saving image file
+            $image = $request->file('image');
+            $fileName = time().'.'.$image->getClientOriginalExtension();
+
+            $image->storeAs('tickets', $fileName);
+
+            // Ticket create
+            $imagePath = "tickets/".$fileName;
+
             Ticket::create([
                 'subject' => $request->get('subject'),
-                'time' => $request->get('time'),
+                'estimation' => $estimation,
                 'description' => $request->get('description'),
-                'image' => $request->get('image'),
+                'image' => $imagePath,
                 'employed_id' => $request->get('employed_id'),
-                'status_id' => $request->get('status_id'),
+                'status_id' => 3, // abierto = status by default when created
                 'type_id' => $request->get('type_id'),
                 'priority_id' => $request->get('priority_id'),
-                'technical_id' => $request->get('technical_id'),
-                'score_usr' => $request->get('score_usr'),
-                'score_tech' => $request->get('score_tech')
+                'technical_id' => $request->get('technical_id')
             ]);
         } catch (QueryException $e) {
             return response()->json(
@@ -89,7 +91,7 @@ class TicketController extends Controller
             // cambiar los findOrfail para regresar la informacion de error
             $ticket->update([
                 'subject'=>$request->subject,
-                'time'=>$request->time,
+                'estimation'=>$request->estimation,
                 'description'=>$request->description,
                 'image'=>$request->image,
                 'status_id'=>$request->status,

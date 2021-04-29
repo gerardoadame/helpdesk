@@ -30,7 +30,7 @@ class LogController extends Controller
             $usr = User::forceCreate([
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'admin'=>$request->admin,
+                'admin' => $request->admin,
                 'type_id' => $request->type,
             ]);
             $per = Person::create([
@@ -47,15 +47,18 @@ class LogController extends Controller
             return response()->json(
                 $data = [
                     'message' => "error al registrar el usuario",
-                    'errorInfo'=>$e->errorInfo
+                    'errorInfo' => $e->errorInfo
                 ],
-                $status=403
+                $status = 403
             );
         }
 
-        return response()->json([
-            'message' => 'Successfully created user!'
-        ], 201);
+        return response()->json(
+            $data = [
+                'message' => 'Successfully created user!'
+            ],
+            $status = 201
+        );
     }
 
     /**
@@ -72,9 +75,9 @@ class LogController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!Auth::attempt($credentials))
-            return response()->json($data=[
+            return response()->json($data = [
                 'message' => 'Unauthorized'
-            ], $status=401);
+            ], $status = 401);
 
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
@@ -109,14 +112,13 @@ class LogController extends Controller
     public function user(Request $request)
     {
         // dd($request);
-        $usr=$request->user();
+        $usr = $request->user();
         return response()->json(
-            $data=[
-                'user'=>$usr,
-                'person'=>$usr->person,
+            $data = [
+                'user' => $usr,
+                'person' => $usr->person,
             ],
-            $status=200 ,
+            $status = 200,
         );
     }
-    
 }
