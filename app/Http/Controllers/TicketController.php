@@ -11,6 +11,7 @@ class TicketController extends Controller
 {
 
     function create(Request $request) {
+        // dd($request);
         try {
             // Validating data
             $request->validate([
@@ -23,7 +24,7 @@ class TicketController extends Controller
                 'priority_id' => 'required|integer'
             ]);
 
-            $estimation = ($request->get('estimation') == 'null') ? null : 'null';
+            // $estimation = ($request->estimation == 'null') ? null : 'null';
 
             // Saving image file
             $image = $request->file('image');
@@ -36,7 +37,8 @@ class TicketController extends Controller
 
             Ticket::create([
                 'subject' => $request->get('subject'),
-                'estimation' => $estimation,
+                // 'estimation' => $estimation,
+                'estimation' => $request->estimation,
                 'description' => $request->get('description'),
                 'image' => $imagePath,
                 'employed_id' => $request->get('employed_id'),
@@ -122,16 +124,23 @@ class TicketController extends Controller
     //lista de tickets
     {
         try {
-            //pendiente
+            $tickets=Ticket::all();
         } catch (QueryException $e) {
             return response()->json(
                 $response = [
-                    'message' => "create not found!",
+                    'message' => "tickets not found!",
                     'errorInfo' => $e->errorInfo
                 ],
                 $status = 403
             );
         }
+
+        return response()->json(
+            $data=[
+                'tickets'=> $tickets
+            ],
+            $status=200
+        );
     }
     //traer cantidades de tickets (tecnico / admin)
     function quantity(Request $request)
