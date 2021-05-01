@@ -10,34 +10,35 @@ use Illuminate\Support\Carbon;
 class TicketController extends Controller
 {
 
-    function create(Request $request) {
+    function create(Request $request)
+    {
         try {
             // Validating data
             $request->validate([
                 'subject' => 'required',
                 'description' => 'required',
-                'image' => 'file|image',
+                'image' => 'file|image|nullable',
                 'employed_id' => 'required|integer',
                 'technical_id' => 'required|integer',
                 'type_id' => 'required|integer',
                 'priority_id' => 'required|integer',
             ]);
 
-            # FormData case
-            $estimation = ($request->estimation == 'null') ? null : 'null';
-
             // Saving image file
-            $image = $request->file('image');
-            $fileName = time().'.'.$image->getClientOriginalExtension();
+            $imagePath = null;
+            if ($request->get('image')) {
+                $image = $request->file('image');
+                $fileName = time() . '.' . $image->getClientOriginalExtension();
 
-            $image->storeAs('tickets', $fileName);
+                $image->storeAs('tickets', $fileName);
 
-            // Ticket create
-            $imagePath = "tickets/".$fileName;
+                // Ticket create
+                $imagePath = "tickets/" . $fileName;
+            }
 
-            Ticket::create([
+            $ticket = Ticket::create([
                 'subject' => $request->get('subject'),
-                'estimation' => $estimation,
+                'estimation' => $request->get('estimation'),
                 'description' => $request->get('description'),
                 'image' => $imagePath,
                 'employed_id' => $request->get('employed_id'),
@@ -46,6 +47,8 @@ class TicketController extends Controller
                 'priority_id' => $request->get('priority_id'),
                 'technical_id' => $request->get('technical_id')
             ]);
+
+            return response()->json($ticket->only(['id', 'subject']));
         } catch (QueryException $e) {
             return response()->json(
                 $response = [
@@ -91,14 +94,14 @@ class TicketController extends Controller
             $ticket = Ticket::findOrfail($id);
             // cambiar los findOrfail para regresar la informacion de error
             $ticket->update([
-                'subject'=>$request->subject,
-                'estimation'=>$request->estimation,
-                'description'=>$request->description,
-                'image'=>$request->image,
-                'status_id'=>$request->status,
-                'type_id'=>$request->type,
-                'priority_id'=>$request->priority,
-                'technical_id'=>$request->technical
+                'subject' => $request->subject,
+                'estimation' => $request->estimation,
+                'description' => $request->description,
+                'image' => $request->image,
+                'status_id' => $request->status,
+                'type_id' => $request->type,
+                'priority_id' => $request->priority,
+                'technical_id' => $request->technical
             ]);
         } catch (QueryException $e) {
             return response()->json(
@@ -112,18 +115,17 @@ class TicketController extends Controller
         // return $ticket;
         // return $request;
         return response()->json(
-            $data=[
-                "message"=>"Ticket modified succesfully!"
+            $data = [
+                "message" => "Ticket modified succesfully!"
             ],
-            $status=200
+            $status = 200
         );
-
     }
     function index(Request $request)
     //lista de tickets
     {
         try {
-            $tickets=Ticket::all();
+            $tickets = Ticket::all();
         } catch (QueryException $e) {
             return response()->json(
                 $response = [
@@ -135,10 +137,10 @@ class TicketController extends Controller
         }
 
         return response()->json(
-            $data=[
-                'tickets'=> $tickets
+            $data = [
+                'tickets' => $tickets
             ],
-            $status=200
+            $status = 200
         );
     }
     //traer cantidades de tickets
@@ -212,7 +214,7 @@ class TicketController extends Controller
             $almacen['EnProceso'] = count($tickets->where('status_id', 2));
             $almacen['Cerrados']  = count($tickets->where('status_id', 1));
             $almacen['Creados'] = array_sum($almacen);
-            
+
             return $almacen;
         } catch (QueryException $e) {
             return response()->json(
