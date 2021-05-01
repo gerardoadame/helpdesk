@@ -137,9 +137,7 @@ class TicketController extends Controller
         }
 
         return response()->json(
-            $data = [
-                'tickets' => $tickets
-            ],
+            $data = $tickets,
             $status = 200
         );
     }
