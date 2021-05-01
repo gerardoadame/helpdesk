@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{LogController, TicketController, UserController};
-use GuzzleHttp\Psr7\Request;
 
 /*
 |------------------------------------------------------------------------------|
@@ -17,19 +16,14 @@ use GuzzleHttp\Psr7\Request;
 
 Route::prefix('auth')->group(function () {
     Route::post('login', [LogController::class, 'login']);
-     //No contemplado
+    //No contemplado
     Route::post('signup', [LogController::class, 'signUp']);
-    
 });
 
 
 Route::middleware(['auth:api'])->group(function () {
 
     Route::get('auth/logout', [LogController::class, 'logout']);
-    // lista de empleados
-    Route::get('emplist', [UserController::class, 'emplist']);
-    // lista de tecnicos
-    Route::get('teclist', [UserController::class, 'teclist']);
 
     Route::prefix('users')->group(function () {
         // Lista de usuarios
@@ -38,17 +32,16 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('detail', [UserController::class, 'detail']);
         // editar informacion del usuario
         Route::put('edit', [UserController::class, 'edit']);
+        
+        Route::get('agents', [UserController::class, 'agents']);
+        Route::get('clients', [UserController::class, 'clients']);
     });
 
     Route::prefix('tickets')->group(function () {
-        // ver tickets
         Route::get('', [TicketController::class, 'index']);
         Route::post('create', [TicketController::class, 'create']);
         Route::get('view/{id}', [TicketController::class, 'viewOne']);
         Route::put('edit/{id}', [TicketController::class, 'edit']);
         Route::post('quantity', [TicketController::class, 'quantity']);
     });
-
-    
-
 });

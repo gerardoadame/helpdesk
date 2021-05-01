@@ -116,24 +116,27 @@ class UserController extends Controller
         // );
     }
 
-    Public function emplist(Request $request){
-        // lista de empleados
-        $e=User::where(['type_id'=>2])->get();
-        return response()->json(
-            $data=[
-                'empleados'=>[$e],
-            ],
-            $status=200
-        );
+    # SIMPLIFICAR codigo dublicado: agents(), clients()
+    public function agents(Request $request) {
+        // tecnicos
+        $users = Person::whereHas('user', function ($query) {
+            return $query->where('users.type_id', '=', 1);
+        })->get()
+        ->map(function ($user) {
+            return $user->only(['id', 'name', 'last_name']);
+        });;
+        
+        return response()->json($users);
     }
-    Public function teclist(Request $request){
-        // lista de tecnicos
-        $t=User::where(['type_id'=>1])->get();
-        return response()->json(
-            $data=[
-                'tecnicos'=>[$t]
-            ],
-            $status=200
-        );
+    public function clients(Request $request) {
+        // clientes
+        $users = Person::whereHas('user', function ($query) {
+            return $query->where('users.type_id', '=', 2);
+        })->get()
+        ->map(function ($user) {
+            return $user->only(['id', 'name', 'last_name']);
+        });;
+        
+        return response()->json($users);
     }
 }
