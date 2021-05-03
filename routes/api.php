@@ -22,6 +22,7 @@ Route::prefix('auth')->group(function () {
     
 });
 
+Route::post('test1', 'App\Http\Controllers\UserController@test2')->name('test1');
 
 Route::middleware(['auth:api'])->group(function () {
 
@@ -49,6 +50,7 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('quantity',[TicketController::class],'quantity');
     });
 
-    
+    // ruta de prueba 2
+    Route::get('test2', [UserController::class, 'test2'])->name('test2');
 
 });
