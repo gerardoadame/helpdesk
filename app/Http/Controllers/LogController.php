@@ -7,10 +7,8 @@ use Illuminate\Database\QueryException;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use App\Models\Person;
 use App\Models\User;
-use PhpParser\Node\Stmt\TryCatch;
 
 class LogController extends Controller
 {
@@ -33,7 +31,7 @@ class LogController extends Controller
                 'admin' => $request->admin,
                 'type_id' => $request->type,
             ]);
-            $per = Person::create([
+            Person::create([
                 'name' => $request->name,
                 'last_name' => $request->last_name,
                 'birth' => $request->birth,
@@ -104,21 +102,5 @@ class LogController extends Controller
         return response()->json([
             'message' => 'Successfully logged out'
         ]);
-    }
-
-    /**
-     * Obtener el objeto User como json
-     */
-    public function user(Request $request)
-    {
-        // dd($request);
-        $usr = $request->user();
-        return response()->json(
-            $data = [
-                'user' => $usr,
-                'person' => $usr->person,
-            ],
-            $status = 200,
-        );
     }
 }

@@ -20,8 +20,6 @@ Route::prefix('auth')->group(function () {
     Route::post('signup', [LogController::class, 'signUp']);
 });
 
-Route::post('test1', 'App\Http\Controllers\UserController@test2')->name('test1');
-
 Route::middleware(['auth:api'])->group(function () {
 
     Route::get('auth/logout', [LogController::class, 'logout']);
@@ -32,7 +30,7 @@ Route::middleware(['auth:api'])->group(function () {
         // Info. personal de usuario
         Route::get('detail', [UserController::class, 'detail']);
         // editar informacion del usuario
-        Route::put('edit', [UserController::class, 'edit']);
+        Route::get('edit', [UserController::class, 'edit'])->name('edit');
         
         Route::get('agents', [UserController::class, 'agents']);
         Route::get('clients', [UserController::class, 'clients']);
@@ -45,8 +43,5 @@ Route::middleware(['auth:api'])->group(function () {
         Route::put('edit/{id}', [TicketController::class, 'edit']);
         Route::post('quantity', [TicketController::class, 'quantity']);
     });
-    
-    // ruta de prueba 2
-    Route::get('test2', [UserController::class, 'test2'])->name('test2');
 
 });
