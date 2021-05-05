@@ -23,14 +23,17 @@ class Ticket extends Model
         return $this->belongsTo(Priority::class);
     }
 
-    public function types()
+    public function type()
     {
         return $this->belongsTo(Type_ticket::class);
     }
 
-    public function person()
-    {
-        return $this->belongsTo(Person::class);
+    public function agent() { //technical
+        return $this->belongsTo(Person::class, 'technical_id');
+    }
+
+    public function client() {
+        return $this->belongsTo(Person::class, 'employed_id');
     }
 
     public function reply()
