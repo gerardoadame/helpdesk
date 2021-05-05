@@ -6,6 +6,7 @@ use App\Models\{Ticket, Person, User};
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
@@ -67,11 +68,13 @@ class TicketController extends Controller
     }
 
     // metodo para ver informacion de un ticket en especifico
-    function viewOne(Request $request, $id)
-    {
+    function viewOne(Request $request, $id) {
         try {
-            $ticket = Ticket::findOrfail($id);
-            // cambiar los findOrfail por get para regresar la informacion de error
+            $ticket = Ticket::with([
+                'agent',
+                'client',
+                'status',
+                'type'])->where('id', $id)->first();
         } catch (QueryException $e) {
             return response()->json(
                 $data = [
@@ -80,6 +83,15 @@ class TicketController extends Controller
                 ],
                 $status = 404
             );
+        }
+
+        $imgPath = $ticket->image;
+        if (Storage::exists($imgPath)) {
+            $image = Storage::get($imgPath);
+            $type = pathinfo(storage_path($imgPath), PATHINFO_EXTENSION);
+
+            $encodedImage = 'data:image/'.$type.';base64, '.base64_encode($image);
+            $ticket->image = $encodedImage;
         }
 
         return $ticket;
