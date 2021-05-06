@@ -137,7 +137,14 @@ class TicketController extends Controller
     //lista de tickets
     {
         try {
-            $tickets = Ticket::all();
+            // $tickets = Ticket::all();
+            $tickets=Ticket::with([
+                'type',
+                'priorities',
+                'status',
+                'client',
+                'agent'
+                ])->get();
         } catch (QueryException $e) {
             return response()->json(
                 $response = [
@@ -149,6 +156,14 @@ class TicketController extends Controller
         }
 
         return response()->json(
+            // $data=[
+            //     "ticket"=>$tickets,
+            //     "tipo"=>$tickets->type,
+            //     "prioridad"=>$tickets->priorities,
+            //     "tatus"=>$tickets->status,
+            //     "remitente"=>$tickets->client->name,
+            //     "tecnico"=>$tickets->agent->name
+            // ],
             $data = $tickets,
             $status = 200
         );
