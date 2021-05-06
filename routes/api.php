@@ -47,5 +47,8 @@ Route::middleware(['auth:api'])->group(function () {
         Route::put('edit/{id}', [TicketController::class, 'edit']);
         Route::post('quantity',[TicketController::class],'quantity');
     });
+    Route::prefix('person')->group(function(){
+        Route::get('list',[PersonController::class,'list']);
+    });
 
 });
