@@ -27,7 +27,7 @@ class TicketController extends Controller
 
             // Saving image file
             $imagePath = null;
-            if ($request->get('image')) {
+            if ($request->file('image')) {
                 $image = $request->file('image');
                 $fileName = time() . '.' . $image->getClientOriginalExtension();
 
