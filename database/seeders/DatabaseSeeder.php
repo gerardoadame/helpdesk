@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             'payments',
             'providers',
             'actives',
+            'active_person'
     	]);
 
         // \App\Models\User::factory(10)->create();
@@ -38,6 +39,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentSeeder::class);
         $this->call(ProviderSeeder::class);
         $this->call(ActiveSeeder::class);
+        $this->call(Active_PersonSeeder::class);
     }
 
     protected function truncateTables(array $tables){

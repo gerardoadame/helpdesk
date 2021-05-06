@@ -20,17 +20,20 @@ class Ticket extends Model
 
     public function priorities()
     {
-        return $this->belongsTo(Priority::class);
+        return $this->belongsTo(Priority::class, 'priority_id');
     }
 
-    public function types()
+    public function type()
     {
         return $this->belongsTo(Type_ticket::class);
     }
 
-    public function person()
-    {
-        return $this->belongsTo(Person::class);
+    public function agent() { //technical
+        return $this->belongsTo(Person::class, 'technical_id');
+    }
+
+    public function client() {
+        return $this->belongsTo(Person::class, 'employed_id');
     }
 
     public function reply()
