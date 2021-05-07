@@ -24,9 +24,8 @@ class Person extends Model
         'area_id',
     ];
 
-    public function user()
-    {
-        return $this->hasOne(User::class, 'user_id', 'id');
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 
     public function tickets_employed()
