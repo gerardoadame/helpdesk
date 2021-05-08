@@ -97,11 +97,9 @@ class TicketController extends Controller
         return $ticket;
     }
 
-    // metodo para mof¿dificar un ticket
     function edit(Request $request, $id)
     // function edit(Request $request)
     {
-        // dd($request, $id);
         try {
             $ticket = Ticket::findOrfail($id);
             // cambiar los findOrfail para regresar la informacion de error
@@ -109,11 +107,10 @@ class TicketController extends Controller
                 'subject' => $request->subject,
                 'estimation' => $request->estimation,
                 'description' => $request->description,
-                'image' => $request->image,
-                'status_id' => $request->status,
-                'type_id' => $request->type,
-                'priority_id' => $request->priority,
-                'technical_id' => $request->technical
+                'status_id' => $request->status_id,
+                'type_id' => $request->type_id,
+                'priority_id' => $request->priority_id,
+                'technical_id' => $request->technical_id
             ]);
         } catch (QueryException $e) {
             return response()->json(
@@ -124,15 +121,10 @@ class TicketController extends Controller
                 $status = 404
             );
         }
-        // return $ticket;
-        // return $request;
-        return response()->json(
-            $data = [
-                "message" => "Ticket modified succesfully!"
-            ],
-            $status = 200
-        );
+        
+        return $ticket;
     }
+
     function index(Request $request)
     //lista de tickets
     {
