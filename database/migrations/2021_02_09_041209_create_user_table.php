@@ -22,8 +22,8 @@ class CreateUserTable extends Migration
             $table->biginteger('type_id')->unsigned();
             $table->foreign('type_id')->references('id')->on('user_type');
             $table->text('avatar')->default('default.png');
-            $table->biginteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('Users');
+            $table->biginteger('person_id')->unsigned();
+            $table->foreign('person_id')->references('id')->on('Persons');
         });
     }
 
