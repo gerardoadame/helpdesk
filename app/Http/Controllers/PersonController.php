@@ -26,4 +26,11 @@ class PersonController extends Controller
             );
         }
     }
+    function Viewperson(Request $request)
+    {
+        //Cuando se cierre el ticket que no se vuelva a reabrir.
+        // $p = Person::has('user')->with('user')->get();
+        // $p = User::with('type')->with('person')->get();
+        // return $p;
+    }
 }

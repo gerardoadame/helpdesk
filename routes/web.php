@@ -39,6 +39,6 @@ Route::post('quantity',[TicketController::class,'quantity']);
 Route::post('create',[TicketController::class,'create']);
 #Rutas de Persona
 Route::get('list',[PersonController::class,'list']);
-
+Route::get('l',[PersonController::class,'Viewperson']);
 
 

@@ -21,7 +21,6 @@ class PersonSeeder extends Seeder
         	'address'=>"av del desierto #525",
         	'phone'=>"871xxxxxxx",
         	'employment'=>"ingeniero",
-        	'user_id'=>1,
         	'area_id'=>1,
         ]);
 
@@ -32,7 +31,6 @@ class PersonSeeder extends Seeder
             'address'=>"cerrada huizachal #78",
             'phone'=>"871xxxxxxx",
             'employment'=>"tecnico",
-            'user_id'=>2,
             'area_id'=>1,
         ]);
 
@@ -43,7 +41,6 @@ class PersonSeeder extends Seeder
             'address'=>"carolinas",
             'phone'=>"871xxxxxxx",
             'employment'=>"secretario",
-            'user_id'=>3,
             'area_id'=>2,
         ]);
     }

@@ -21,8 +21,6 @@ class CreatePersonTable extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('employment');
-            $table->biginteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('Users');
             $table->biginteger('area_id')->unsigned();
             $table->foreign('area_id')->references('id')->on('Areas');
 
