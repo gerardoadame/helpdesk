@@ -97,9 +97,7 @@ class TicketController extends Controller
         return $ticket;
     }
 
-    function edit(Request $request, $id)
-    // function edit(Request $request)
-    {
+    function edit(Request $request, $id) {
         try {
             $ticket = Ticket::findOrfail($id);
             // cambiar los findOrfail para regresar la informacion de error
@@ -242,5 +240,19 @@ class TicketController extends Controller
                 $status = 200
             );
         }
+    }
+
+    function rate(Request $request, $id) {
+        $ticket = Ticket::findOrfail($id);
+
+        if ($request->ratedPerson == 'agent') {
+            $ticket->score_tech = $request->stars;
+        } else if ($request->ratedPerson == 'client') {
+            $ticket->score_usr = $request->stars;
+        }
+
+        $ticket->save();
+
+        return $ticket;
     }
 }
