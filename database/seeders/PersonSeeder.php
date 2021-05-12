@@ -22,6 +22,7 @@ class PersonSeeder extends Seeder
         	'phone'=>"871xxxxxxx",
         	'employment'=>"ingeniero",
         	'area_id'=>1,
+            'user_id'=>1,
         ]);
 
         DB::table('persons')->insert([
@@ -32,6 +33,7 @@ class PersonSeeder extends Seeder
             'phone'=>"871xxxxxxx",
             'employment'=>"tecnico",
             'area_id'=>1,
+            'user_id'=>2,
         ]);
 
         DB::table('persons')->insert([
@@ -42,6 +44,7 @@ class PersonSeeder extends Seeder
             'phone'=>"871xxxxxxx",
             'employment'=>"secretario",
             'area_id'=>2,
+            'user_id'=>3,
         ]);
     }
 }

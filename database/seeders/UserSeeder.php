@@ -21,21 +21,18 @@ class UserSeeder extends Seeder
         	'password'=>Hash::make('12345'),
             'admin'=>1,
         	'type_id'=>1,
-            'person_id'=>1,
         ]);
 
         DB::table('users')->insert([
             'email'=>'enrique@fimsa.com',
             'password'=>Hash::make('12345'),
             'type_id'=>1,
-            'person_id'=>2,
         ]);
 
         DB::table('users')->insert([
             'email'=>'angel@fimsa.com',
             'password'=>Hash::make('12345'),
             'type_id'=>2,
-            'person_id'=>3,
         ]);
     }
 }
