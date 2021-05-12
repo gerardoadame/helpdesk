@@ -23,7 +23,8 @@ class CreatePersonTable extends Migration
             $table->string('employment');
             $table->biginteger('area_id')->unsigned();
             $table->foreign('area_id')->references('id')->on('Areas');
-
+            $table->biginteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('Users');
         });
     }
 
