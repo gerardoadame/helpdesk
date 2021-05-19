@@ -98,6 +98,8 @@ class TicketController extends Controller
     }
 
     function edit(Request $request, $id) {
+        $request->validate(['has_image' => 'boolean']);
+
         try {
             $ticket = Ticket::findOrfail($id);
             // cambiar los findOrfail para regresar la informacion de error
@@ -110,6 +112,24 @@ class TicketController extends Controller
                 'priority_id' => $request->priority_id,
                 'technical_id' => $request->technical_id
             ]);
+
+            $imagePath = null;
+
+            if($request->boolean('has_image')) {
+                // Saving image file
+                if ($request->file('image')) {
+                    $image = $request->file('image');
+                    $fileName = time() . '.' . $image->getClientOriginalExtension();
+
+                    $image->storeAs('tickets', $fileName);
+
+                    // Ticket create
+                    $imagePath = "tickets/" . $fileName;
+                }
+            }
+
+            $ticket->update(['image' => $imagePath]);
+
         } catch (QueryException $e) {
             return response()->json(
                 $data = [
