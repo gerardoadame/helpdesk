@@ -98,7 +98,6 @@ class TicketController extends Controller
     }
 
     function edit(Request $request, $id) {
-        $request->validate(['has_image' => 'boolean']);
 
         try {
             $ticket = Ticket::findOrfail($id);
@@ -113,22 +112,34 @@ class TicketController extends Controller
                 'technical_id' => $request->technical_id
             ]);
 
-            $imagePath = null;
+            $imgStatus = $request->get('image_status');
 
-            if($request->boolean('has_image')) {
-                // Saving image file
-                if ($request->file('image')) {
-                    $image = $request->file('image');
-                    $fileName = time() . '.' . $image->getClientOriginalExtension();
+            if($imgStatus != 'same') {
 
-                    $image->storeAs('tickets', $fileName);
+                $imagePath = null;
+                
+                if ($imgStatus == 'changed') {
 
-                    // Ticket create
-                    $imagePath = "tickets/" . $fileName;
+                    // Saving image file
+                    if ($request->file('image')) {
+                        $image = $request->file('image');
+                        $fileName = time() . '.' . $image->getClientOriginalExtension();
+
+                        $image->storeAs('tickets', $fileName);
+
+                        // Ticket create
+                        $imagePath = "tickets/" . $fileName;
+
+                        $ticket->update(['image' => $imagePath]);
+
+                        # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen previa
+                    }
+
+                } else if ($imgStatus == 'deleted') {
+                    # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen
+                    $ticket->update(['image' => $imagePath]);
                 }
             }
-
-            $ticket->update(['image' => $imagePath]);
 
         } catch (QueryException $e) {
             return response()->json(
