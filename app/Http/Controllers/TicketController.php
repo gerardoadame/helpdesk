@@ -257,7 +257,7 @@ class TicketController extends Controller
                     "message" => "ERROR not found",
                     "errorInfo" => $e->errorInfo,
                 ],
-                $status = 200
+                $status = 403
             );
         }
     }
