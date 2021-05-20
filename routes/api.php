@@ -45,6 +45,8 @@ Route::middleware(['auth:api'])->group(function () {
     });
     Route::prefix('person')->group(function(){
         Route::get('list',[PersonController::class,'list']);
+        Route::get('Viewperson',[PersonController::class,'Viewperson']);
+        Route::post('edit',[PersonController::class,'Editperson']);
     });
 
 });
