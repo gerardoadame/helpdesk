@@ -131,9 +131,12 @@ class TicketController extends Controller
                         $imagePath = "tickets/" . $fileName;
 
                         $ticket->update(['image' => $imagePath]);
+
+                        # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen previa
                     }
 
                 } else if ($imgStatus == 'deleted') {
+                    # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen
                     $ticket->update(['image' => $imagePath]);
                 }
             }
