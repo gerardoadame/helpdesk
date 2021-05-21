@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LogController, TicketController, UserController};
+use App\Http\Controllers\{LogController, TicketController, UserController,PersonController};
 
 /*
 |------------------------------------------------------------------------------|
@@ -44,7 +44,11 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('quantity', [TicketController::class, 'quantity']);
     });
     Route::prefix('person')->group(function(){
-        Route::get('list',[PersonController::class,'list']);
+        Route::get('',[PersonController::class,'list']);
+        Route::get('view/{id}', [UserController::class, 'detail']);
+        Route::put('edit/{id}', [UserController::class, 'edit']);
+ 
+
     });
 
 });
