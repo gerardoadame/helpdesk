@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LogController, TicketController, UserController};
+use App\Http\Controllers\{LogController, TicketController, UserController, PersonController};
 
 /*
 |------------------------------------------------------------------------------|
@@ -17,7 +17,7 @@ use App\Http\Controllers\{LogController, TicketController, UserController};
 Route::prefix('auth')->group(function () {
     Route::post('login', [LogController::class, 'login'])->middleware('cors');
     //No contemplado
-    //Route::post('signup', [LogController::class, 'signUp']);
+    Route::post('signup', [LogController::class, 'signUp']);
 });
 
 Route::middleware(['auth:api', 'cors'])->group(function () {
@@ -42,10 +42,11 @@ Route::middleware(['auth:api', 'cors'])->group(function () {
         Route::get('view/{id}', [TicketController::class, 'viewOne']);
         Route::put('edit/{id}', [TicketController::class, 'edit']);
         Route::post('quantity', [TicketController::class, 'quantity']);
+        Route::put('reply/{id}',[TicketController::class, 'reply']);
     });
     Route::prefix('person')->group(function(){
         Route::get('list',[PersonController::class,'list']);
-        Route::get('Viewperson',[PersonController::class,'Viewperson']);
+        Route::get('viewperson/{id}',[PersonController::class,'viewperson']);
         Route::post('edit',[PersonController::class,'Editperson']);
     });
 

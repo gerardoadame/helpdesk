@@ -16,7 +16,7 @@ class CreateRepliesTable extends Migration
         Schema::create('replies', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
             $table->text('content');
-            $table->text('image');
+            $table->text('image')->nullable();
             $table->timestamps(0);
             $table->integer('ticket_id');
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Ticket, Person, User};
+use App\Models\{Ticket, Person, User, Reply};
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon;
@@ -68,13 +68,16 @@ class TicketController extends Controller
     }
 
     // metodo para ver informacion de un ticket en especifico
-    function viewOne(Request $request, $id) {
+    function viewOne(Request $request, $id)
+    {
         try {
             $ticket = Ticket::with([
                 'agent',
                 'client',
                 'status',
-                'type'])->where('id', $id)->first();
+                'type',
+                'reply'
+            ])->where('id', $id)->first();
         } catch (QueryException $e) {
             return response()->json(
                 $data = [
@@ -90,14 +93,19 @@ class TicketController extends Controller
             $image = Storage::get($imgPath);
             $type = pathinfo(storage_path($imgPath), PATHINFO_EXTENSION);
 
-            $encodedImage = 'data:image/'.$type.';base64, '.base64_encode($image);
+            $encodedImage = 'data:image/' . $type . ';base64, ' . base64_encode($image);
             $ticket->image = $encodedImage;
         }
 
-        return $ticket;
+        // return $ticket->reply;
+        return response()->json(
+            $data=$ticket,
+            $status=200
+        );
     }
 
-    function edit(Request $request, $id) {
+    function edit(Request $request, $id)
+    {
 
         try {
             $ticket = Ticket::findOrfail($id);
@@ -106,18 +114,18 @@ class TicketController extends Controller
                 'subject' => $request->subject,
                 'estimation' => $request->estimation,
                 'description' => $request->description,
-                'status_id' => $request->status_id,
-                'type_id' => $request->type_id,
-                'priority_id' => $request->priority_id,
-                'technical_id' => $request->technical_id
+                'status' => $request->status_id,
+                'type' => $request->type_id,
+                'priority' => $request->priority_id,
+                'technical' => $request->technical_id
             ]);
 
             $imgStatus = $request->get('image_status');
 
-            if($imgStatus != 'same') {
+            if ($imgStatus != 'same') {
 
                 $imagePath = null;
-                
+
                 if ($imgStatus == 'changed') {
 
                     // Saving image file
@@ -134,13 +142,11 @@ class TicketController extends Controller
 
                         # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen previa
                     }
-
                 } else if ($imgStatus == 'deleted') {
                     # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen
                     $ticket->update(['image' => $imagePath]);
                 }
             }
-
         } catch (QueryException $e) {
             return response()->json(
                 $data = [
@@ -150,7 +156,7 @@ class TicketController extends Controller
                 $status = 404
             );
         }
-        
+
         return $ticket;
     }
 
@@ -159,13 +165,13 @@ class TicketController extends Controller
     {
         try {
             // $tickets = Ticket::all();
-            $tickets=Ticket::with([
+            $tickets = Ticket::with([
                 'type',
                 'priorities',
                 'status',
                 'client',
                 'agent'
-                ])->get();
+            ])->get();
         } catch (QueryException $e) {
             return response()->json(
                 $response = [
@@ -273,7 +279,8 @@ class TicketController extends Controller
         }
     }
 
-    function rate(Request $request, $id) {
+    function rate(Request $request, $id)
+    {
         $ticket = Ticket::findOrfail($id);
 
         if ($request->ratedPerson == 'agent') {
@@ -285,5 +292,51 @@ class TicketController extends Controller
         $ticket->save();
 
         return $ticket;
+    }
+
+    function reply(Request $request, $id)
+    {
+        // $ticket = Ticket::findOrfail($id);
+        // dd($request);
+        // return $request->content;
+        $request->validate([
+            "content"=>"required",
+            'image' => 'file|image|nullable'
+        ]);
+
+        // Saving image file
+        $imagePath = null;
+        if ($request->file('image')) {
+            $image = $request->file('image');
+            $fileName = time() . '.' . $image->getClientOriginalExtension();
+
+            $image->storeAs('replies', $fileName);
+
+            // Ticket create
+            $imagePath = "replies/" . $fileName;
+        }
+
+        try {
+            $reply=Reply::create([
+                "content"=>$request->get('content'),
+                "image"=>$imagePath,
+                "ticket_id"=>$id
+            ]);
+        } catch (QueryException $e) {
+            return response()->json(
+                $data = [
+                    "message" => "ERROR, reply not created",
+                    "errorInfo" => $e->errorInfo,
+                ],
+                $status = 400
+            );
+        }
+
+        return response()->json(
+            $data=[
+                'message'=>"Reply created successfully!"
+            ],
+            $status=200
+        );
     }
 }
