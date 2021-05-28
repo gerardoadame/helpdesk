@@ -78,6 +78,17 @@ class TicketController extends Controller
                 'type',
                 'reply'
             ])->where('id', $id)->first();
+
+            /*
+            |------------------------------------------------------------------|
+            | CÓDIGO TEMPORAL                                                  |
+            |------------------------------------------------------------------|
+            | Construir "retroalimentación" (feedback) dentro del ticket o
+            | aplicar una relación 1:1
+            */
+            $ticket->feedback = $ticket->reply->first();
+            /**|FIN DE CÓDIGO TEMPORAL */
+            
         } catch (QueryException $e) {
             return response()->json(
                 $data = [
