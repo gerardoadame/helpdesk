@@ -120,15 +120,15 @@ class TicketController extends Controller
 
         try {
             $ticket = Ticket::findOrfail($id);
-            // cambiar los findOrfail para regresar la informacion de error
+            
             $ticket->update([
                 'subject' => $request->subject,
                 'estimation' => $request->estimation,
                 'description' => $request->description,
-                'status' => $request->status_id,
-                'type' => $request->type_id,
-                'priority' => $request->priority_id,
-                'technical' => $request->technical_id
+                'status_id' => $request->status_id,
+                'type_id' => $request->type_id,
+                'priority_id' => $request->priority_id,
+                'technical_id' => $request->technical_id
             ]);
 
             $imgStatus = $request->get('image_status');
