@@ -88,16 +88,19 @@ class TicketController extends Controller
             */
             $feedback = $ticket->reply->first();
 
-            $imgPath = $feedback->image;
-            if (Storage::exists($imgPath)) {
-                $image = Storage::get($imgPath);
-                $type = pathinfo(storage_path($imgPath), PATHINFO_EXTENSION);
+            if ($feedback) {
+                $imgPath = $feedback->image;
+                if ($imgPath && Storage::exists($imgPath)) {
+                    $image = Storage::get($imgPath);
+                    $type = pathinfo(storage_path($imgPath), PATHINFO_EXTENSION);
 
-                $encodedImage = 'data:image/' . $type . ';base64, ' . base64_encode($image);
-                $feedback->image = $encodedImage;
+                    $encodedImage = 'data:image/' . $type . ';base64, ' . base64_encode($image);
+                    $feedback->image = $encodedImage;
+                }
             }
 
-            $ticket->feedback = $ticket->reply->first();
+            $ticket->feedback = $feedback;
+
             /**|FIN DE CÓDIGO TEMPORAL */
             
         } catch (QueryException $e) {
