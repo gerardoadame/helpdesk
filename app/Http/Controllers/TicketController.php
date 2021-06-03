@@ -339,4 +339,58 @@ class TicketController extends Controller
             $status=200
         );
     }
+
+    function editreply(Request $request, $id){
+        // return "pudrete flanders";
+        try {
+            $reply=Reply::findOrfail($id);
+
+            $reply->update([
+                'content' => $request->content,
+            ]);
+
+            $imgStatus = $request->get('image_status');
+
+            if ($imgStatus != 'same') {
+
+                $imagePath = null;
+
+                if ($imgStatus == 'changed') {
+
+                    // Saving image file
+                    if ($request->file('image')) {
+                        $image = $request->file('image');
+                        $fileName = time() . '.' . $image->getClientOriginalExtension();
+
+                        $image->storeAs('replies', $fileName);
+
+                        // Ticket create
+                        $imagePath = "replies/" . $fileName;
+
+                        $reply->update(['image' => $imagePath]);
+
+                        # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen previa
+                    }
+                } else if ($imgStatus == 'deleted') {
+                    # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen
+                    $reply->update(['image' => $imagePath]);
+                }
+            }
+        } catch (QueryException $e) {
+            return response()->json(
+                $response = [
+                    'message' => "ERROR, reply not edited",
+                    'errorInfo' => $e->errorInfo
+                ],
+                $status = 400
+            );
+        }
+        return response()->json(
+            $data = [
+                'message' => 'Successfully reply edited!'
+            ],
+            $status = 200
+        );
+    }
+
 }

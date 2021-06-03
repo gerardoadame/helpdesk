@@ -43,6 +43,7 @@ Route::middleware(['auth:api', 'cors'])->group(function () {
         Route::put('edit/{id}', [TicketController::class, 'edit']);
         Route::post('quantity', [TicketController::class, 'quantity']);
         Route::put('reply/{id}',[TicketController::class, 'reply']);
+        Route::put('edtreply/{id}',[TicketController::class, 'editreply']);
     });
     Route::prefix('person')->group(function(){
         Route::get('list',[PersonController::class,'list']);
