@@ -86,6 +86,17 @@ class TicketController extends Controller
             | Construir "retroalimentación" (feedback) dentro del ticket o
             | aplicar una relación 1:1
             */
+            $feedback = $ticket->reply->first();
+
+            $imgPath = $feedback->image;
+            if (Storage::exists($imgPath)) {
+                $image = Storage::get($imgPath);
+                $type = pathinfo(storage_path($imgPath), PATHINFO_EXTENSION);
+
+                $encodedImage = 'data:image/' . $type . ';base64, ' . base64_encode($image);
+                $feedback->image = $encodedImage;
+            }
+
             $ticket->feedback = $ticket->reply->first();
             /**|FIN DE CÓDIGO TEMPORAL */
             
