@@ -42,6 +42,7 @@ Route::middleware(['auth:api', 'cors'])->group(function () {
         Route::get('view/{id}', [TicketController::class, 'viewOne']);
         Route::put('edit/{id}', [TicketController::class, 'edit']);
         Route::post('quantity', [TicketController::class, 'quantity']);
+        Route::post('rate/{id}', [TicketController::class, 'rate']);
         Route::put('reply/{id}',[TicketController::class, 'reply']);
         Route::put('edtreply/{id}',[TicketController::class, 'editreply']);
     });
