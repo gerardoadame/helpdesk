@@ -365,10 +365,11 @@ class TicketController extends Controller
         );
     }
 
-    function editreply(Request $request, $id){
+    function editreply(Request $request){
         // return "pudrete flanders";
         try {
-            $reply=Reply::findOrfail($id);
+            //Codigo  temporal
+            $reply= Ticket::find($request->ticket_id)->reply->first();
 
             $reply->update([
                 'content' => $request->content,
