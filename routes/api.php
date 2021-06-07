@@ -55,7 +55,7 @@ Route::middleware(['auth:api', 'cors'])->group(function () {
 
     Route::prefix('active')->group(function(){
         Route::put('create', [ActiveController::class,'create']);
-        // Route::get('viewperson/{id}',[PersonController::class,'viewperson']);
+        Route::get('viewactive/{id}',[ActiveController::class,'viewactive']);
         // Route::post('edit',[PersonController::class,'Editperson']);
     });
 
