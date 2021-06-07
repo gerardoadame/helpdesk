@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LogController, TicketController, UserController, PersonController};
+use App\Http\Controllers\{LogController, TicketController, UserController, PersonController, ActiveController};
 
 /*
 |------------------------------------------------------------------------------|
@@ -46,10 +46,17 @@ Route::middleware(['auth:api', 'cors'])->group(function () {
         Route::put('reply/{id}',[TicketController::class, 'reply']);
         Route::put('edtreply/{id}',[TicketController::class, 'editreply']);
     });
+
     Route::prefix('person')->group(function(){
         Route::get('list',[PersonController::class,'list']);
         Route::get('viewperson/{id}',[PersonController::class,'viewperson']);
         Route::post('edit',[PersonController::class,'Editperson']);
+    });
+
+    Route::prefix('active')->group(function(){
+        Route::put('create', [ActiveController::class,'create']);
+        // Route::get('viewperson/{id}',[PersonController::class,'viewperson']);
+        // Route::post('edit',[PersonController::class,'Editperson']);
     });
 
 });
