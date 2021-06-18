@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
-use App\Http\Controllers\{LogController, TicketController, UserController,PersonController};
-=======
+
+
 use App\Http\Controllers\{LogController, TicketController, UserController, PersonController, ActiveController};
->>>>>>> de650b894cba40b3dd86856e8584609ab96da4dc
+
 
 /*
 |------------------------------------------------------------------------------|
@@ -52,16 +51,14 @@ Route::middleware(['auth:api', 'cors'])->group(function () {
     });
 
     Route::prefix('person')->group(function(){
-<<<<<<< HEAD
+
         Route::get('',[PersonController::class,'list']);
         Route::get('view/{id}',[PersonController::class,'viewperson']);
         Route::put('edit/{id}',[PersonController::class,'Editperson']);
-
-=======
         Route::get('list',[PersonController::class,'list']);
         Route::get('viewperson/{id}',[PersonController::class,'viewperson']);
         Route::post('edit',[PersonController::class,'Editperson']);
->>>>>>> de650b894cba40b3dd86856e8584609ab96da4dc
+
     });
 
     Route::prefix('active')->group(function(){
