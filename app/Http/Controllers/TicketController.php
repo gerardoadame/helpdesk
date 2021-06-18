@@ -98,6 +98,7 @@ class TicketController extends Controller
     }
 
     function edit(Request $request, $id) {
+
         try {
             $ticket = Ticket::findOrfail($id);
             // cambiar los findOrfail para regresar la informacion de error
@@ -110,6 +111,36 @@ class TicketController extends Controller
                 'priority_id' => $request->priority_id,
                 'technical_id' => $request->technical_id
             ]);
+
+            $imgStatus = $request->get('image_status');
+
+            if($imgStatus != 'same') {
+
+                $imagePath = null;
+                
+                if ($imgStatus == 'changed') {
+
+                    // Saving image file
+                    if ($request->file('image')) {
+                        $image = $request->file('image');
+                        $fileName = time() . '.' . $image->getClientOriginalExtension();
+
+                        $image->storeAs('tickets', $fileName);
+
+                        // Ticket create
+                        $imagePath = "tickets/" . $fileName;
+
+                        $ticket->update(['image' => $imagePath]);
+
+                        # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen previa
+                    }
+
+                } else if ($imgStatus == 'deleted') {
+                    # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen
+                    $ticket->update(['image' => $imagePath]);
+                }
+            }
+
         } catch (QueryException $e) {
             return response()->json(
                 $data = [
@@ -237,7 +268,7 @@ class TicketController extends Controller
                     "message" => "ERROR not found",
                     "errorInfo" => $e->errorInfo,
                 ],
-                $status = 200
+                $status = 403
             );
         }
     }

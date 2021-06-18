@@ -15,12 +15,12 @@ use App\Http\Controllers\{LogController, TicketController, UserController,Person
 */
 
 Route::prefix('auth')->group(function () {
-    Route::post('login', [LogController::class, 'login']);
+    Route::post('login', [LogController::class, 'login'])->middleware('cors');
     //No contemplado
     Route::post('signup', [LogController::class, 'signUp']);
 });
 
-Route::middleware(['auth:api'])->group(function () {
+Route::middleware(['auth:api', 'cors'])->group(function () {
 
     Route::get('auth/logout', [LogController::class, 'logout']);
 
@@ -45,9 +45,8 @@ Route::middleware(['auth:api'])->group(function () {
     });
     Route::prefix('person')->group(function(){
         Route::get('',[PersonController::class,'list']);
-        Route::get('view/{id}', [UserController::class, 'detail']);
-        Route::put('edit/{id}', [UserController::class, 'edit']);
- 
+        Route::get('view/{id}',[PersonController::class,'viewperson']);
+        Route::put('edit/{id}',[PersonController::class,'Editperson']);
 
     });
 
