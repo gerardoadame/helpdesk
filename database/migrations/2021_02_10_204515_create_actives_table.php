@@ -21,7 +21,7 @@ class CreateActivesTable extends Migration
             $table->date('purchase');
             $table->date('warranty');
             $table->string('serie',45);
-            $table->boolean('stock');
+            $table->boolean('stock')->default(1);
             $table->integer('provider_id');
             $table->integer('payment_id');
             $table->foreign('provider_id')->references('id')->on('providers');

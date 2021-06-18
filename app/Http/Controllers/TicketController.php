@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Ticket, Person, User};
+use App\Models\{Ticket, Person, User, Reply};
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon;
@@ -68,13 +68,41 @@ class TicketController extends Controller
     }
 
     // metodo para ver informacion de un ticket en especifico
-    function viewOne(Request $request, $id) {
+    function viewOne(Request $request, $id)
+    {
         try {
             $ticket = Ticket::with([
                 'agent',
                 'client',
                 'status',
-                'type'])->where('id', $id)->first();
+                'type',
+                'reply'
+            ])->where('id', $id)->first();
+
+            /*
+            |------------------------------------------------------------------|
+            | CÓDIGO TEMPORAL                                                  |
+            |------------------------------------------------------------------|
+            | Construir "retroalimentación" (feedback) dentro del ticket o
+            | aplicar una relación 1:1
+            */
+            $feedback = $ticket->reply->first();
+
+            if ($feedback) {
+                $imgPath = $feedback->image;
+                if ($imgPath && Storage::exists($imgPath)) {
+                    $image = Storage::get($imgPath);
+                    $type = pathinfo(storage_path($imgPath), PATHINFO_EXTENSION);
+
+                    $encodedImage = 'data:image/' . $type . ';base64, ' . base64_encode($image);
+                    $feedback->image = $encodedImage;
+                }
+            }
+
+            $ticket->feedback = $feedback;
+
+            /**|FIN DE CÓDIGO TEMPORAL */
+            
         } catch (QueryException $e) {
             return response()->json(
                 $data = [
@@ -90,18 +118,23 @@ class TicketController extends Controller
             $image = Storage::get($imgPath);
             $type = pathinfo(storage_path($imgPath), PATHINFO_EXTENSION);
 
-            $encodedImage = 'data:image/'.$type.';base64, '.base64_encode($image);
+            $encodedImage = 'data:image/' . $type . ';base64, ' . base64_encode($image);
             $ticket->image = $encodedImage;
         }
 
-        return $ticket;
+        // return $ticket->reply;
+        return response()->json(
+            $data=$ticket,
+            $status=200
+        );
     }
 
-    function edit(Request $request, $id) {
+    function edit(Request $request, $id)
+    {
 
         try {
             $ticket = Ticket::findOrfail($id);
-            // cambiar los findOrfail para regresar la informacion de error
+            
             $ticket->update([
                 'subject' => $request->subject,
                 'estimation' => $request->estimation,
@@ -114,10 +147,10 @@ class TicketController extends Controller
 
             $imgStatus = $request->get('image_status');
 
-            if($imgStatus != 'same') {
+            if ($imgStatus != 'same') {
 
                 $imagePath = null;
-                
+
                 if ($imgStatus == 'changed') {
 
                     // Saving image file
@@ -134,13 +167,11 @@ class TicketController extends Controller
 
                         # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen previa
                     }
-
                 } else if ($imgStatus == 'deleted') {
                     # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen
                     $ticket->update(['image' => $imagePath]);
                 }
             }
-
         } catch (QueryException $e) {
             return response()->json(
                 $data = [
@@ -150,7 +181,7 @@ class TicketController extends Controller
                 $status = 404
             );
         }
-        
+
         return $ticket;
     }
 
@@ -159,13 +190,13 @@ class TicketController extends Controller
     {
         try {
             // $tickets = Ticket::all();
-            $tickets=Ticket::with([
+            $tickets = Ticket::with([
                 'type',
                 'priorities',
                 'status',
                 'client',
                 'agent'
-                ])->get();
+            ])->get();
         } catch (QueryException $e) {
             return response()->json(
                 $response = [
@@ -273,7 +304,8 @@ class TicketController extends Controller
         }
     }
 
-    function rate(Request $request, $id) {
+    function rate(Request $request, $id)
+    {
         $ticket = Ticket::findOrfail($id);
 
         if ($request->ratedPerson == 'agent') {
@@ -286,4 +318,105 @@ class TicketController extends Controller
 
         return $ticket;
     }
+
+    function reply(Request $request, $id)
+    {
+        // $ticket = Ticket::findOrfail($id);
+        // dd($request);
+        // return $request->content;
+        $request->validate([
+            "content"=>"required",
+            'image' => 'file|image|nullable'
+        ]);
+
+        // Saving image file
+        $imagePath = null;
+        if ($request->file('image')) {
+            $image = $request->file('image');
+            $fileName = time() . '.' . $image->getClientOriginalExtension();
+
+            $image->storeAs('replies', $fileName);
+
+            // Ticket create
+            $imagePath = "replies/" . $fileName;
+        }
+
+        try {
+            $reply=Reply::create([
+                "content"=>$request->get('content'),
+                "image"=>$imagePath,
+                "ticket_id"=>$id
+            ]);
+        } catch (QueryException $e) {
+            return response()->json(
+                $data = [
+                    "message" => "ERROR, reply not created",
+                    "errorInfo" => $e->errorInfo,
+                ],
+                $status = 400
+            );
+        }
+
+        return response()->json(
+            $data=[
+                'message'=>"Reply created successfully!"
+            ],
+            $status=200
+        );
+    }
+
+    function editreply(Request $request){
+        // return "pudrete flanders";
+        try {
+            //Codigo  temporal
+            $reply= Ticket::find($request->ticket_id)->reply->first();
+
+            $reply->update([
+                'content' => $request->content,
+            ]);
+
+            $imgStatus = $request->get('image_status');
+
+            if ($imgStatus != 'same') {
+
+                $imagePath = null;
+
+                if ($imgStatus == 'changed') {
+
+                    // Saving image file
+                    if ($request->file('image')) {
+                        $image = $request->file('image');
+                        $fileName = time() . '.' . $image->getClientOriginalExtension();
+
+                        $image->storeAs('replies', $fileName);
+
+                        // Ticket create
+                        $imagePath = "replies/" . $fileName;
+
+                        $reply->update(['image' => $imagePath]);
+
+                        # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen previa
+                    }
+                } else if ($imgStatus == 'deleted') {
+                    # EQUIPO: Aplicar un proceso de eliiminación (papelera) de la imagen
+                    $reply->update(['image' => $imagePath]);
+                }
+            }
+        } catch (QueryException $e) {
+            return response()->json(
+                $response = [
+                    'message' => "ERROR, reply not edited",
+                    'errorInfo' => $e->errorInfo
+                ],
+                $status = 400
+            );
+        }
+        return response()->json(
+            $data = [
+                'message' => 'Successfully reply edited!'
+            ],
+            $status = 200
+        );
+    }
+
 }

@@ -1,7 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+<<<<<<< HEAD
 use App\Http\Controllers\{LogController, TicketController, UserController,PersonController};
+=======
+use App\Http\Controllers\{LogController, TicketController, UserController, PersonController, ActiveController};
+>>>>>>> de650b894cba40b3dd86856e8584609ab96da4dc
 
 /*
 |------------------------------------------------------------------------------|
@@ -42,12 +46,28 @@ Route::middleware(['auth:api', 'cors'])->group(function () {
         Route::get('view/{id}', [TicketController::class, 'viewOne']);
         Route::put('edit/{id}', [TicketController::class, 'edit']);
         Route::post('quantity', [TicketController::class, 'quantity']);
+        Route::post('rate/{id}', [TicketController::class, 'rate']);
+        Route::put('reply/{id}',[TicketController::class, 'reply']);
+        Route::put('edtreply',[TicketController::class, 'editreply']);
     });
+
     Route::prefix('person')->group(function(){
+<<<<<<< HEAD
         Route::get('',[PersonController::class,'list']);
         Route::get('view/{id}',[PersonController::class,'viewperson']);
         Route::put('edit/{id}',[PersonController::class,'Editperson']);
 
+=======
+        Route::get('list',[PersonController::class,'list']);
+        Route::get('viewperson/{id}',[PersonController::class,'viewperson']);
+        Route::post('edit',[PersonController::class,'Editperson']);
+>>>>>>> de650b894cba40b3dd86856e8584609ab96da4dc
+    });
+
+    Route::prefix('active')->group(function(){
+        Route::put('create', [ActiveController::class,'create']);
+        Route::get('viewactive/{id}',[ActiveController::class,'viewactive']);
+        // Route::post('edit',[PersonController::class,'Editperson']);
     });
 
 });
