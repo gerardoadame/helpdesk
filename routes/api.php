@@ -54,6 +54,7 @@ Route::middleware(['auth:api', 'cors'])->group(function () {
     });
 
     Route::prefix('active')->group(function(){
+        Route::get('list',[ActiveController::class,'list']);
         Route::put('create', [ActiveController::class,'create']);
         Route::get('viewactive/{id}',[ActiveController::class,'viewactive']);
         // Route::post('edit',[PersonController::class,'Editperson']);

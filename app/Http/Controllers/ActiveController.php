@@ -8,6 +8,38 @@ use Illuminate\Database\QueryException;
 
 class ActiveController extends Controller
 {
+    public function list(Request $request){
+        try {
+            // $activos=Active::all();
+            $activos=Active::with([
+                'provider',
+                'payment'
+            ])->get();
+            #en caso de que no hya activos registrados se regresa el mensaje
+            if(count($activos)==0){
+                return response()->json(
+                    $response = [
+                        'message' => "activos no encontrados!"
+                    ],
+                    $status = 200
+                );
+            }
+        } catch (QueryException $e) {
+            return response()->json(
+                $response = [
+                    'message' => "activos no encontrados!",
+                    'errorInfo' => $e->errorInfo
+                ],
+                $status = 403
+            );
+        }
+
+        return response()->json(
+            $data=[$activos],
+            $status=200
+        );
+    }
+
     public function create(Request $request){
         try {
             $request->validate([
