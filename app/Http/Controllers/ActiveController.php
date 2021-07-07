@@ -88,15 +88,48 @@ class ActiveController extends Controller
         } catch (QueryException $e) {
             return response()->json(
                 $data=[
-                    'message'=>"active created successfully!",
+                    'message'=>"activo no encontrado!",
                     'errorInfo'=>$e->errorInfo
                 ],
-                $status=403
+                $status=404
             );
         }
 
         return response()->json(
             $data=$active,
+            $status=200
+        );
+    }
+
+    public function edit(Request $request, $id){
+        try {
+            $active=Active::findOrFail($id);
+            $active->update([
+                'equipment'=> request('equipment'),
+                'model'=>request('model'),
+                'features'=>request('features'),
+                'purchase'=>request('purchase'),
+                'warranty'=>request('warranty'),
+                'serie'=>request('serie'),
+                'stock'=>request('stock'),
+                'provider'=>request('provider_id'),
+                'payment'=>request('payment_id')
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json(
+                $data=[
+                    'message'=>"activo no editado!",
+                    'errorInfo'=>$e->errorInfo
+                ],
+                $status=404
+            );
+        }
+        
+        return response()->json(
+            $data=[
+                "message"=>"activo editado!"
+            ],
             $status=200
         );
     }
