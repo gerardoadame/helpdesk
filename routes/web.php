@@ -39,7 +39,7 @@ Route::post('quantity',[TicketController::class,'quantity']);
 Route::post('create',[TicketController::class,'create']);
 #Rutas de Persona
 Route::get('list',[PersonController::class,'list']);
-Route::get('Viewperson',[PersonController::class,'Viewperson']);
+Route::get('viewperson/{id}',[PersonController::class,'viewperson']);
 Route::post('edit',[PersonController::class,'Editperson']);
 
 
