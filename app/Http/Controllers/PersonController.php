@@ -28,11 +28,12 @@ class PersonController extends Controller
             );
         }
     }
-    function Viewperson(Request $request)
+    function viewperson(Request $request, $id)
     {
+        // dd($request->id);
         try {
-            $user = User::findOrfail($request->id);
-            $u = User::where('id',$user->id)->with('type')->with('person')->get();
+            // $user = User::findOrfail($id);
+            $u = User::where('id',$id)->with('type')->with('person')->first();
             return $u;
         } catch (QueryException $e) {
             return response()->json(
@@ -40,7 +41,7 @@ class PersonController extends Controller
                     "message" => "Person not Found",
                     "errorInfo" => $e->errorInfo
                 ],
-                $status = 404
+                // $status = 404
             );
         }
     }
