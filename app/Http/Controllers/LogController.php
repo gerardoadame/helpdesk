@@ -42,21 +42,15 @@ class LogController extends Controller
                 'area_id' => $request->area,
             ]);
         } catch (QueryException $e) {
-            return response()->json(
-                $data = [
-                    'message' => "error al registrar el usuario",
-                    'errorInfo' => $e->errorInfo
-                ],
-                $status = 403
-            );
+            return response([
+                'message' => "error al registrar el usuario",
+                'errorInfo' => $e->errorInfo
+            ], 403);
         }
 
-        return response()->json(
-            $data = [
-                'message' => 'Successfully created user!'
-            ],
-            $status = 201
-        );
+        return response([
+            'message' => 'Successfully created user!'
+        ]);
     }
 
     /**
@@ -73,9 +67,9 @@ class LogController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!Auth::attempt($credentials))
-            return response()->json($data = [
+            return response([
                 'message' => 'Unauthorized'
-            ], $status = 401);
+            ], 401);
 
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
@@ -85,7 +79,7 @@ class LogController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
 
-        return response()->json([
+        return response([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
@@ -99,7 +93,7 @@ class LogController extends Controller
     {
         $request->user()->token()->revoke();
 
-        return response()->json([
+        return response([
             'message' => 'Successfully logged out'
         ]);
     }

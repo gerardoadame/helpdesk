@@ -17,27 +17,16 @@ class ActiveController extends Controller
             ])->get();
             #en caso de que no hya activos registrados se regresa el mensaje
             if(count($activos)==0){
-                return response()->json(
-                    $response = [
-                        'message' => "activos no encontrados!"
-                    ],
-                    $status = 200
-                );
+                return response([ 'message' => 'activos no encontrados!']);
             }
         } catch (QueryException $e) {
-            return response()->json(
-                $response = [
-                    'message' => "activos no encontrados!",
-                    'errorInfo' => $e->errorInfo
-                ],
-                $status = 403
-            );
+            return response([
+                'message' => "activos no encontrados!",
+                'errorInfo' => $e->errorInfo
+            ]);
         }
 
-        return response()->json(
-            $data=[$activos],
-            $status=200
-        );
+        return response($activos);
     }
 
     public function create(Request $request){
@@ -64,19 +53,13 @@ class ActiveController extends Controller
             ]);
 
         } catch (QueryException $e) {
-            return response()->json(
-                $response = [
-                    'message' => "active not created!",
-                    'errorInfo' => $e->errorInfo
-                ],
-                $status = 403
-            );
+            return response([
+                'message' => "active not created!",
+                'errorInfo' => $e->errorInfo
+            ], 403);
         }
 
-        return response()->json(
-            $data="active created successfully!",
-            $status=201
-        );
+        return response("active created successfully!", 201);
     }
 
     public function viewactive(Request $request, $id){
@@ -86,19 +69,13 @@ class ActiveController extends Controller
                 'payment',
             ])->where('id', $id)->get();
         } catch (QueryException $e) {
-            return response()->json(
-                $data=[
-                    'message'=>"activo no encontrado!",
-                    'errorInfo'=>$e->errorInfo
-                ],
-                $status=404
-            );
+            return response([
+                'message'=>"activo no encontrado!",
+                'errorInfo'=>$e->errorInfo
+            ], 404);
         }
 
-        return response()->json(
-            $data=$active,
-            $status=200
-        );
+        return response($active);
     }
 
     public function edit(Request $request, $id){
@@ -117,20 +94,14 @@ class ActiveController extends Controller
             ]);
 
         } catch (QueryException $e) {
-            return response()->json(
-                $data=[
-                    'message'=>"activo no editado!",
-                    'errorInfo'=>$e->errorInfo
-                ],
-                $status=404
-            );
+            return response([
+                'message'=>"activo no editado!",
+                'errorInfo'=>$e->errorInfo
+            ], 404);
         }
-        
-        return response()->json(
-            $data=[
-                "message"=>"activo editado!"
-            ],
-            $status=200
-        );
+
+        return response([
+            "message"=>"activo editado!"
+        ]);
     }
 }
