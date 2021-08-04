@@ -19,27 +19,3 @@ use App\Models\Ticket;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('files', function(){
-    return view('upload');
-});
-
-Route::get('datos','App\Http\Controllers\Controller@datos');
-
-//Pruebas
-Route::get('/token',function()
-{
-    return csrf_field();
-});
-#Rutas del empleado
-
-#Rutas de tickets
-Route::post('obtener',[TicketController::class,'index']);
-Route::post('quantity',[TicketController::class,'quantity']);
-Route::post('create',[TicketController::class,'create']);
-#Rutas de Persona
-Route::get('list',[PersonController::class,'list']);
-Route::get('viewperson/{id}',[PersonController::class,'viewperson']);
-Route::post('edit',[PersonController::class,'Editperson']);
-
-
