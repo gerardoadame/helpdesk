@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function user(Request $request)
     {
-        return response()->json(User::get());
+        return response(User::all());
     }
 
     public function detail(Request $request)
@@ -26,7 +26,7 @@ class UserController extends Controller
         $user->person = $user->person()->first();
         $user->type = $user->type()->first();
 
-        return response()->json($user, 200);
+        return response($user);
     }
 
     // para actualizar otros usuarios
@@ -36,7 +36,7 @@ class UserController extends Controller
             $usr = $req->user();
             $per = Person::where('user_id', $usr->id)->first();
         } catch (QueryException $e) {
-            return response()->json(
+            return response(
                 $data = [
                     'message' => "user not found!",
                     'errorInfo' => $e->errorInfo
@@ -65,7 +65,7 @@ class UserController extends Controller
             'area_id' => $req->area,
         ]);
 
-        return response()->json(
+        return response(
             $data = [
                 'usuario' => $usr,
                 'persona' => $per
@@ -83,8 +83,8 @@ class UserController extends Controller
         ->map(function ($user) {
             return $user->only(['id', 'name', 'last_name']);
         });;
-        
-        return response()->json($users);
+
+        return response($users);
     }
     public function clients(Request $request) {
         // clientes
@@ -94,7 +94,7 @@ class UserController extends Controller
         ->map(function ($user) {
             return $user->only(['id', 'name', 'last_name']);
         });;
-        
-        return response()->json($users);
+
+        return response($users);
     }
 }

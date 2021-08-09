@@ -49,17 +49,17 @@ class TicketController extends Controller
                 'technical_id' => $request->get('technical_id')
             ]);
 
-            return response()->json($ticket->only(['id', 'subject']));
+            return response($ticket->only(['id', 'subject']));
         } catch (QueryException $e) {
-            return response()->json(
-                $response = [
+            return response(
+                $data = [
                     'message' => "create not found!",
                     'errorInfo' => $e->errorInfo
                 ],
                 $status = 403
             );
         }
-        return response()->json(
+        return response(
             $data = [
                 'message' => 'Successfully created Ticket!'
             ],
@@ -102,9 +102,9 @@ class TicketController extends Controller
             $ticket->feedback = $feedback;
 
             /**|FIN DE CÓDIGO TEMPORAL */
-            
+
         } catch (QueryException $e) {
-            return response()->json(
+            return response(
                 $data = [
                     "message" => "ERROR Ticket not found!",
                     "errorInfo" => $e->errorInfo,
@@ -123,9 +123,9 @@ class TicketController extends Controller
         }
 
         // return $ticket->reply;
-        return response()->json(
-            $data=$ticket,
-            $status=200
+        return response(
+            $data = $ticket,
+            $status = 200
         );
     }
 
@@ -134,7 +134,7 @@ class TicketController extends Controller
 
         try {
             $ticket = Ticket::findOrfail($id);
-            
+
             $ticket->update([
                 'subject' => $request->subject,
                 'estimation' => $request->estimation,
@@ -173,7 +173,7 @@ class TicketController extends Controller
                 }
             }
         } catch (QueryException $e) {
-            return response()->json(
+            return response(
                 $data = [
                     "message" => "ERROR Ticket not modified!",
                     "errorInfo" => $e->errorInfo,
@@ -198,8 +198,8 @@ class TicketController extends Controller
                 'agent'
             ])->get();
         } catch (QueryException $e) {
-            return response()->json(
-                $response = [
+            return response(
+                $data = [
                     'message' => "tickets not found!",
                     'errorInfo' => $e->errorInfo
                 ],
@@ -207,15 +207,7 @@ class TicketController extends Controller
             );
         }
 
-        return response()->json(
-            // $data=[
-            //     "ticket"=>$tickets,
-            //     "tipo"=>$tickets->type,
-            //     "prioridad"=>$tickets->priorities,
-            //     "tatus"=>$tickets->status,
-            //     "remitente"=>$tickets->client->name,
-            //     "tecnico"=>$tickets->agent->name
-            // ],
+        return response(
             $data = $tickets,
             $status = 200
         );
@@ -294,7 +286,7 @@ class TicketController extends Controller
 
             return $almacen;
         } catch (QueryException $e) {
-            return response()->json(
+            return response(
                 $data = [
                     "message" => "ERROR not found",
                     "errorInfo" => $e->errorInfo,
@@ -316,7 +308,7 @@ class TicketController extends Controller
 
         $ticket->save();
 
-        return $ticket;
+        return response( $data = $ticket, $status = 200 );
     }
 
     function reply(Request $request, $id)
@@ -348,7 +340,7 @@ class TicketController extends Controller
                 "ticket_id"=>$id
             ]);
         } catch (QueryException $e) {
-            return response()->json(
+            return response(
                 $data = [
                     "message" => "ERROR, reply not created",
                     "errorInfo" => $e->errorInfo,
@@ -357,11 +349,9 @@ class TicketController extends Controller
             );
         }
 
-        return response()->json(
-            $data=[
-                'message'=>"Reply created successfully!"
-            ],
-            $status=200
+        return response(
+            $data = [ 'message'=>"Reply created successfully!" ],
+            $status = 200
         );
     }
 
@@ -403,18 +393,16 @@ class TicketController extends Controller
                 }
             }
         } catch (QueryException $e) {
-            return response()->json(
-                $response = [
+            return response(
+                $data = [
                     'message' => "ERROR, reply not edited",
                     'errorInfo' => $e->errorInfo
                 ],
                 $status = 400
             );
         }
-        return response()->json(
-            $data = [
-                'message' => 'Successfully reply edited!'
-            ],
+        return response(
+            $data = [ 'message' => 'Successfully reply edited!'],
             $status = 200
         );
     }
