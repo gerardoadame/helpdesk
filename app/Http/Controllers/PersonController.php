@@ -19,10 +19,13 @@ class PersonController extends Controller
 
             $person = User::has('person')->has('type')->get();
         } catch (QueryException $e) {
-            return response([
-                "message" => "List of people not Found",
-                "errorInfo" => $e->errorInfo,
-            ], 404);
+            return response(
+                $data = [
+                    "message" => "List of people not Found",
+                    "errorInfo" => $e->errorInfo,
+                ],
+                $status = 404
+            );
         }
     }
     function viewperson(Request $id)
@@ -32,12 +35,14 @@ class PersonController extends Controller
            $user = Person::findOrfail($id->id);
             $u = Person::where('id',$user->id)->with('user')->first();
             return $u;
-            dd ($u);
         } catch (QueryException $e) {
-            return response([
-                "message" => "Person not Found",
-                "errorInfo" => $e->errorInfo
-            ], 404);
+            return response(
+                $data = [
+                    "message" => "Person not Found",
+                    "errorInfo" => $e->errorInfo
+                ],
+                $status = 404
+            );
         }
     }
     function Editperson(Request $request, $id)
@@ -55,10 +60,13 @@ class PersonController extends Controller
             ]);
           //  return response()->json($data = ["message" => "Updated correctly"],$status = 200);
         } catch (QueryException $e) {
-            return response([
-                "message" => "Person not Found",
-                "errorInfo" => $e->errorInfo
-            ], 404);
+            return response(
+                $data = [
+                    "message" => "Person not Found",
+                    "errorInfo" => $e->errorInfo
+                ],
+                $status = 404
+            );
         }
 
     }

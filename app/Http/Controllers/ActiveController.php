@@ -17,13 +17,19 @@ class ActiveController extends Controller
             ])->get();
             #en caso de que no hya activos registrados se regresa el mensaje
             if(count($activos)==0){
-                return response([ 'message' => 'activos no encontrados!']);
+                return response(
+                    $data = [ 'message' => 'activos no encontrados!'],
+                    $status = 200
+                );
             }
         } catch (QueryException $e) {
-            return response([
-                'message' => "activos no encontrados!",
-                'errorInfo' => $e->errorInfo
-            ]);
+            return response(
+                $data = [
+                    'message' => "activos no encontrados!",
+                    'errorInfo' => $e->errorInfo
+                ],
+                $status = 403
+            );
         }
 
         return response($activos);
@@ -53,13 +59,19 @@ class ActiveController extends Controller
             ]);
 
         } catch (QueryException $e) {
-            return response([
-                'message' => "active not created!",
-                'errorInfo' => $e->errorInfo
-            ], 403);
+            return response(
+                $data = [
+                    'message' => "active not created!",
+                    'errorInfo' => $e->errorInfo
+                ],
+                $status = 403
+            );
         }
 
-        return response("active created successfully!", 201);
+        return response(
+            $data = "active created successfully!",
+            $status = 201
+        );
     }
 
     public function viewactive(Request $request, $id){
@@ -69,13 +81,19 @@ class ActiveController extends Controller
                 'payment',
             ])->where('id', $id)->get();
         } catch (QueryException $e) {
-            return response([
-                'message'=>"activo no encontrado!",
-                'errorInfo'=>$e->errorInfo
-            ], 404);
+            return response(
+                $data = [
+                    'message'=>"activo no encontrado!",
+                    'errorInfo'=>$e->errorInfo
+                ],
+                $status = 404
+            );
         }
 
-        return response($active);
+        return response(
+            $data = $active,
+            $status = 200
+        );
     }
 
     public function edit(Request $request, $id){
@@ -94,14 +112,18 @@ class ActiveController extends Controller
             ]);
 
         } catch (QueryException $e) {
-            return response([
-                'message'=>"activo no editado!",
-                'errorInfo'=>$e->errorInfo
-            ], 404);
+            return response(
+                $data = [
+                    'message'=>"activo no editado!",
+                    'errorInfo'=>$e->errorInfo
+                ],
+                $status = 404
+            );
         }
 
-        return response([
-            "message"=>"activo editado!"
-        ]);
+        return response(
+            $data = [ "message"=>"activo editado!"],
+            $status = 200
+        );
     }
 }

@@ -42,15 +42,19 @@ class LogController extends Controller
                 'area_id' => $request->area,
             ]);
         } catch (QueryException $e) {
-            return response([
-                'message' => "error al registrar el usuario",
-                'errorInfo' => $e->errorInfo
-            ], 403);
+            return response(
+                $data = [
+                    'message' => "error al registrar el usuario",
+                    'errorInfo' => $e->errorInfo
+                ],
+                $status = 403
+            );
         }
 
-        return response([
-            'message' => 'Successfully created user!'
-        ]);
+        return response(
+            $data = [ 'message' => 'Successfully created user!' ],
+            $status = 200
+        );
     }
 
     /**
@@ -67,9 +71,10 @@ class LogController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!Auth::attempt($credentials))
-            return response([
-                'message' => 'Unauthorized'
-            ], 401);
+            return response(
+                $data = [ 'message' => 'Unauthorized' ],
+                $status = 401
+            );
 
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
@@ -79,11 +84,14 @@ class LogController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
 
-        return response([
-            'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
-        ]);
+        return response(
+            $data = [
+                'access_token' => $tokenResult->accessToken,
+                'token_type' => 'Bearer',
+                'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
+            ],
+            $status = 200
+        );
     }
 
     /**
@@ -93,8 +101,9 @@ class LogController extends Controller
     {
         $request->user()->token()->revoke();
 
-        return response([
-            'message' => 'Successfully logged out'
-        ]);
+        return response(
+            $data = [ 'message' => 'Successfully logged out' ],
+            $status = 200
+        );
     }
 }

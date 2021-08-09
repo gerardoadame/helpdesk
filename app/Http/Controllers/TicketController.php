@@ -51,14 +51,20 @@ class TicketController extends Controller
 
             return response($ticket->only(['id', 'subject']));
         } catch (QueryException $e) {
-            return response([
-                'message' => "create not found!",
-                'errorInfo' => $e->errorInfo
-            ], 403);
+            return response(
+                $data = [
+                    'message' => "create not found!",
+                    'errorInfo' => $e->errorInfo
+                ],
+                $status = 403
+            );
         }
-        return response([
-            'message' => 'Successfully created Ticket!'
-        ]);
+        return response(
+            $data = [
+                'message' => 'Successfully created Ticket!'
+            ],
+            $status = 201
+        );
     }
 
     // metodo para ver informacion de un ticket en especifico
@@ -98,10 +104,13 @@ class TicketController extends Controller
             /**|FIN DE CÓDIGO TEMPORAL */
 
         } catch (QueryException $e) {
-            return response([
-                "message" => "ERROR Ticket not found!",
-                "errorInfo" => $e->errorInfo,
-            ], 404);
+            return response(
+                $data = [
+                    "message" => "ERROR Ticket not found!",
+                    "errorInfo" => $e->errorInfo,
+                ],
+                $status = 404
+            );
         }
 
         $imgPath = $ticket->image;
@@ -114,7 +123,10 @@ class TicketController extends Controller
         }
 
         // return $ticket->reply;
-        return response($ticket);
+        return response(
+            $data = $ticket,
+            $status = 200
+        );
     }
 
     function edit(Request $request, $id)
@@ -161,10 +173,13 @@ class TicketController extends Controller
                 }
             }
         } catch (QueryException $e) {
-            return response([
-                "message" => "ERROR Ticket not modified!",
-                "errorInfo" => $e->errorInfo,
-            ], 404);
+            return response(
+                $data = [
+                    "message" => "ERROR Ticket not modified!",
+                    "errorInfo" => $e->errorInfo,
+                ],
+                $status = 404
+            );
         }
 
         return $ticket;
@@ -183,13 +198,19 @@ class TicketController extends Controller
                 'agent'
             ])->get();
         } catch (QueryException $e) {
-            return response( [
-                'message' => "tickets not found!",
-                'errorInfo' => $e->errorInfo
-            ], 403);
+            return response(
+                $data = [
+                    'message' => "tickets not found!",
+                    'errorInfo' => $e->errorInfo
+                ],
+                $status = 403
+            );
         }
 
-        return response($tickets);
+        return response(
+            $data = $tickets,
+            $status = 200
+        );
     }
     //traer cantidades de tickets
     function quantity(Request $request)
@@ -265,10 +286,13 @@ class TicketController extends Controller
 
             return $almacen;
         } catch (QueryException $e) {
-            return response([
-                "message" => "ERROR not found",
-                "errorInfo" => $e->errorInfo,
-            ], 403);
+            return response(
+                $data = [
+                    "message" => "ERROR not found",
+                    "errorInfo" => $e->errorInfo,
+                ],
+                $status = 403
+            );
         }
     }
 
@@ -284,7 +308,7 @@ class TicketController extends Controller
 
         $ticket->save();
 
-        return $ticket;
+        return response( $data = $ticket, $status = 200 );
     }
 
     function reply(Request $request, $id)
@@ -316,15 +340,19 @@ class TicketController extends Controller
                 "ticket_id"=>$id
             ]);
         } catch (QueryException $e) {
-            return response([
-                "message" => "ERROR, reply not created",
-                "errorInfo" => $e->errorInfo,
-            ], 400);
+            return response(
+                $data = [
+                    "message" => "ERROR, reply not created",
+                    "errorInfo" => $e->errorInfo,
+                ],
+                $status = 400
+            );
         }
 
-        return response([
-            'message'=>"Reply created successfully!"
-        ]);
+        return response(
+            $data = [ 'message'=>"Reply created successfully!" ],
+            $status = 200
+        );
     }
 
     function editreply(Request $request){
@@ -365,14 +393,18 @@ class TicketController extends Controller
                 }
             }
         } catch (QueryException $e) {
-            return response([
-                'message' => "ERROR, reply not edited",
-                'errorInfo' => $e->errorInfo
-            ]);
+            return response(
+                $data = [
+                    'message' => "ERROR, reply not edited",
+                    'errorInfo' => $e->errorInfo
+                ],
+                $status = 400
+            );
         }
-        return response([
-            'message' => 'Successfully reply edited!'
-        ]);
+        return response(
+            $data = [ 'message' => 'Successfully reply edited!'],
+            $status = 200
+        );
     }
 
 }

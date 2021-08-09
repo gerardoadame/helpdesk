@@ -36,10 +36,13 @@ class UserController extends Controller
             $usr = $req->user();
             $per = Person::where('user_id', $usr->id)->first();
         } catch (QueryException $e) {
-            return response([
-                'message' => "user not found!",
-                'errorInfo' => $e->errorInfo
-            ], 403);
+            return response(
+                $data = [
+                    'message' => "user not found!",
+                    'errorInfo' => $e->errorInfo
+                ],
+                $status = 403
+            );
         }
 
         // aqi se actulizan datos del usuario
@@ -62,10 +65,13 @@ class UserController extends Controller
             'area_id' => $req->area,
         ]);
 
-        return response([
-            'usuario' => $usr,
-            'persona' => $per
-        ]);
+        return response(
+            $data = [
+                'usuario' => $usr,
+                'persona' => $per
+            ],
+            $status = 200
+        );
     }
 
     # SIMPLIFICAR codigo duplicado: agents(), clients()
