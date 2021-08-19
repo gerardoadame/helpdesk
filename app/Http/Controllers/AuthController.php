@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use Illuminate\Database\QueryException;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use App\Models\Person;
-use App\Models\User;
+use Illuminate\Support\Facades\{Auth, Hash};
+use App\Models\{Person, User};
 
-class LogController extends Controller
+class AuthController extends Controller
 {
     public function signUp(Request $request)
     {
@@ -57,9 +55,6 @@ class LogController extends Controller
         );
     }
 
-    /**
-     * Inicio de sesión y creación de token
-     */
     public function login(Request $request)
     {
         $request->validate([
@@ -68,7 +63,7 @@ class LogController extends Controller
             'remember_me' => 'boolean'
         ]);
 
-        $credentials = request(['email', 'password']);
+        $credentials = $request->only(['email', 'password']);
 
         if (!Auth::attempt($credentials))
             return response(
@@ -76,16 +71,17 @@ class LogController extends Controller
                 $status = 401
             );
 
-        $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token');
-
+        $tokenResult = $request->user()->createToken('Personal Access Token');
         $token = $tokenResult->token;
+
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
+
         $token->save();
 
         return response(
             $data = [
+                'user' => User::with(['person', 'type',])->where('id', Auth::id())->first(),
                 'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',
                 'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()

@@ -3,8 +3,13 @@
 use Illuminate\Support\Facades\Route;
 
 
-use App\Http\Controllers\{LogController, TicketController, UserController, PersonController, ActiveController};
-
+use App\Http\Controllers\{
+    AuthController,
+    TicketController,
+    UserController,
+    PersonController,
+    ActiveController
+};
 
 /*
 |------------------------------------------------------------------------------|
@@ -18,14 +23,14 @@ use App\Http\Controllers\{LogController, TicketController, UserController, Perso
 */
 
 Route::prefix('auth')->group(function () {
-    Route::post('login', [LogController::class, 'login']);
+    Route::post('login', [AuthController::class, 'login']);
     //No contemplado
-    //Route::post('signup', [LogController::class, 'signUp']);
+    //Route::post('signup', [AuthController::class, 'signUp']);
 });
 
 Route::middleware('auth:api')->group(function () {
 
-    Route::get('auth/logout', [LogController::class, 'logout']);
+    Route::get('auth/logout', [AuthController::class, 'logout']);
 
     Route::prefix('users')->group(function () {
         // Lista de usuarios
