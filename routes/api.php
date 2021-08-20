@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-
 use App\Http\Controllers\{
     AuthController,
     TicketController,
@@ -24,8 +22,13 @@ use App\Http\Controllers\{
 
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
-    //No contemplado
-    //Route::post('signup', [AuthController::class, 'signUp']);
+
+    Route::get('password/reset/{token}', function ($token) {
+        return redirect()->away('http://localhost:4200/password-reset/'.$token);
+    })->name('password.reset');
+
+    Route::post('password/forgot', [AuthController::class, 'forgotPassword']);
+    Route::post('password/reset', [AuthController::class, 'resetPassword']);
 });
 
 Route::middleware('auth:api')->group(function () {
