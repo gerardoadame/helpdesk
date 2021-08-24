@@ -1,0 +1,16 @@
+@import "~bulma/bulma.sass";
+
+
+html, body {
+    height: 100%;
+}
+
+@font-face {
+  font-family: 'Raleway-VariableFont_wght';
+  src: url('/font/Raleway-VariableFont_wght.ttf');
+}
+
+* {
+  font-family: 'Raleway-VariableFont_wght', BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif !important;
+  font-feature-settings: 'lnum' 1;
+}

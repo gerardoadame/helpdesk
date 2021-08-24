@@ -21,4 +21,4 @@ use App\Models\Ticket;
 | servicios en el grupo de middleware "web"
 */
 
-//Route::get('/', function () { return view('welcome'); });
+Route::get('/', function () { return view('welcome'); });

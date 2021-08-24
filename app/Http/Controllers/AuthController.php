@@ -17,7 +17,7 @@ class AuthController extends Controller
         $status = Password::sendResetLink($request->only('email'));
 
         if ($status !== Password::RESET_LINK_SENT) {
-            return response(['message' => $status], 400);
+            return response(['message' => $status], 422);
         }
 
         return response($status);
