@@ -7,18 +7,18 @@
 
     <style>
         @php
-            include(public_path().'/css/app.css');
+            include(public_path().'/css/email.css');
         @endphp
     </style>
 
 
 </head>
 <body style="background-color: #f6f6f6">
-    <div class="container-fluid p-5 is-flex is-justify-content-center is-align-items-center is-flex-direction-column">
+    <div class="container is-fluid py-5 is-flex is-justify-content-center is-align-items-center is-flex-direction-column">
 
         <div class="block is-flex is-justify-content-center is-align-items-center">
             <figure class="image is-32x32 mr-2">
-                <img src="{{ asset('img/logo.png') }}">
+                <img href="{{ public_path() . '/img/logo.png' }}">
             </figure>
             <p class="title is-4">HiDesk</p>
         </div>
@@ -35,8 +35,6 @@
 
                 <a class="button is-primary" href="{{ $actionUrl }}">{{ $actionText }}</a>
             </div>
-
-            <p class="block">{{ $line }}</p>
 
             <p class="has-text-grey has-text-weight-semibold">{{ $salutation }}</p>
             <small class="has-text-grey">Este enlace para restablecer la contraseña expirará en 60 minutos.</small>

@@ -14,4 +14,5 @@ require('laravel-mix-purgecss');
 
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/css/app.scss', 'public/css')
+    .sass('resources/css/email.scss', 'public/css/email.css')
     .purgeCss();

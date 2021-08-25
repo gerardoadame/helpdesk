@@ -44,9 +44,8 @@ class ResetPassword extends Notification
         return (new MailMessage)
             ->subject('Solicitud para reestablecer contraseña')
             ->greeting('¡Hola!')
-            ->line('Estás recibiendo este correo electrónico porque hemos recibido una solicitud de restablecimiento de contraseña para su cuenta.')
+            ->line('Hemos recibido una solicitud de restablecimiento de contraseña para su cuenta.')
             ->action('Reestablecer contraseña', route('password.reset', $this->token))
-            ->line('Si no realizaste esta solicitud, no se requiere realizar ninguna acción.')
             ->salutation('Saludos, El equipo de '. config('app.name'));
     }
 
