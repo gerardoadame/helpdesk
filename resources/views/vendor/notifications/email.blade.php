@@ -37,7 +37,7 @@
 
             <hr>
 
-            <small class="has-text-grey">Si tienes problemas para hacer clic en el botón {{ $actionText }}, copie
+            <small class="has-text-grey">Si tiene problemas para hacer clic en el botón {{ $actionText }}, copie
                 y pegue este URL en su navegador web: <br>
                 {{ $actionUrl }}
             </small>

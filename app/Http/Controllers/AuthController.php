@@ -20,7 +20,7 @@ class AuthController extends Controller
             return response(['message' => $status], 422);
         }
 
-        return response($status);
+        return response(['message' => $status]);
     }
 
     public function signUp(Request $request)
