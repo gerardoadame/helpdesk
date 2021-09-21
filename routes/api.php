@@ -23,8 +23,8 @@ use App\Http\Controllers\{
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
 
-    Route::get('password/reset/{token}', function ($token) {
-        return redirect()->away('http://localhost:4200/password-reset/'.$token);
+    Route::get('password/reset/{email}/{token}', function ($token, $email) {
+        return redirect()->away('http://localhost:4200/password-reset/'.urlencode($email).'/'.$token);
     })->name('password.reset');
 
     Route::post('password/forgot', [AuthController::class, 'forgotPassword']);

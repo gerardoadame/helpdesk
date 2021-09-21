@@ -11,15 +11,17 @@ class ResetPassword extends Notification
     use Queueable;
 
     private $token;
+    private $email;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($token)
+    public function __construct($token, $email)
     {
         $this->token = $token;
+        $this->email = $email;
     }
 
     /**
@@ -45,7 +47,7 @@ class ResetPassword extends Notification
             ->subject('Solicitud para reestablecer contraseña')
             ->greeting('¡Hola!')
             ->line('Recibimos una solicitud de restablecimiento de contraseña para su cuenta.')
-            ->action('Reestablecer contraseña', route('password.reset', $this->token))
+            ->action('Reestablecer contraseña', route('password.reset', ['email' => $this->email, 'token' => $this->token]))
             ->salutation('Saludos, El equipo de '. config('app.name'));
     }
 
