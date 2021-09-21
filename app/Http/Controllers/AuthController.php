@@ -5,11 +5,24 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{Auth, Hash};
+use Illuminate\Support\Facades\{Auth, Hash, Password};
 use App\Models\{Person, User};
 
 class AuthController extends Controller
 {
+    public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        if ($status !== Password::RESET_LINK_SENT) {
+            return response(['message' => $status], 422);
+        }
+
+        return response(['message' => $status]);
+    }
+
     public function signUp(Request $request)
     {
         $request->validate([
@@ -101,5 +114,24 @@ class AuthController extends Controller
             $data = [ 'message' => 'Successfully logged out' ],
             $status = 200
         );
+    }
+
+    public function resetPassword(Request $request) {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+            'token' => 'required|string',
+        ]);
+
+        $reset_password_status = Password::reset($credentials, function ($user, $password) {
+            $user->password = Hash::make($password);
+            $user->save();
+        });
+
+        if ($reset_password_status == Password::INVALID_TOKEN) {
+            return response(["message" => "Invalid token provided"], 400);
+        }
+
+        return response(['message' => 'Password has been successfully changed']);
     }
 }
