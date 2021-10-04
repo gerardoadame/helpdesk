@@ -14,7 +14,7 @@ class PersonController extends Controller
         try {
              $person = Person::join('users','users.id','=','persons.user_id')
              ->join('user_type','users.type_id','=','user_type.id')
-             ->select('persons.name','persons.last_name','persons.employment','persons.phone','users.email','users.admin','user_type.type')->get();
+             ->select('persons.id', 'persons.name','persons.last_name','persons.employment','persons.phone','users.email','users.admin','user_type.type')->get();
              return $person;
 
             $person = User::has('person')->has('type')->get();
