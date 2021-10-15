@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{User,Person};
+use App\Models\{User, Person, Ticket};
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -31,8 +31,13 @@ class PersonController extends Controller
     function viewperson(Request $request)
     {
         try {
-            $user = Person::where('id', $request->id)->with('user', 'user.type')->firstOrFail();
-            return $user;
+            $person = Person::where('id', $request->id)->with('user', 'user.type')->firstOrFail();
+
+            // aniade puntuaciones
+            $person->asAgentScore = $this->getRatingAverage($person->id, 'agent');
+            $person->asClientScore = $this->getRatingAverage($person->id, 'client');
+
+            return $person;
         } catch (QueryException $e) {
             return response(
                 $data = [
@@ -67,5 +72,27 @@ class PersonController extends Controller
             );
         }
 
+    }
+
+    private function getRatingAverage(int $personId, string $type = 'agent')
+    {
+        $scoreColumn = null;
+        $personColumn = null;
+
+        if ($type === 'agent') {
+            $scoreColumn = 'score_tech';
+            $personColumn = 'technical_id';
+        }
+        elseif ($type === 'client') {
+            $scoreColumn = 'score_usr';
+            $personColumn = 'employed_id';
+        }
+
+        $conditions = [
+            ['status_id', 1],
+            [$personColumn, $personId]
+        ];
+
+        return (float) Ticket::where($conditions)->avg($scoreColumn) ?? 0.0;
     }
 }
