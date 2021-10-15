@@ -28,13 +28,11 @@ class PersonController extends Controller
             );
         }
     }
-    function viewperson(Request $id)
+    function viewperson(Request $request)
     {
-        // dd($request->id);
         try {
-           $user = Person::findOrfail($id->id);
-            $u = Person::where('id',$user->id)->with('user')->first();
-            return $u;
+            $user = Person::where('id', $request->id)->with('user', 'user.type')->firstOrFail();
+            return $user;
         } catch (QueryException $e) {
             return response(
                 $data = [
