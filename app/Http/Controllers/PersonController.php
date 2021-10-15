@@ -74,7 +74,7 @@ class PersonController extends Controller
 
     }
 
-    private function getRatingAverage(int $personId, string $type = 'agent')
+    private function getRatingAverage(int $personId, string $type = 'agent'): float
     {
         $scoreColumn = null;
         $personColumn = null;
@@ -93,6 +93,6 @@ class PersonController extends Controller
             [$personColumn, $personId]
         ];
 
-        return (float) Ticket::where($conditions)->avg($scoreColumn) ?? 0.0;
+        return (float) Ticket::where($conditions)->avg($scoreColumn) ?? 0;
     }
 }
