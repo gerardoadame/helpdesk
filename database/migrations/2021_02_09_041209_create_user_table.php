@@ -18,8 +18,11 @@ class CreateUserTable extends Migration
             $table->string('email',45)->unique();
             $table->string('password',60);
             $table->boolean('admin')->default(0);
-            $table->foreignId('type_id')->on('user_type');
             $table->text('avatar')->default('default.png');
+
+            $table->foreignId('type_id')->on('user_type');
+            $table->foreignId('person_id');
+
             $table->rememberToken();
             $table->timestamps();
         });

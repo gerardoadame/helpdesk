@@ -13,18 +13,18 @@ class CreatePersonTable extends Migration
      */
     public function up()
     {
-        Schema::create('Persons', function (Blueprint $table) {
-            $table->integer('id')->autoIncrement();
+        Schema::create('persons', function (Blueprint $table) {
+            $table->id();
             $table->string('name');
             $table->string('last_name');
             $table->date('birth')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('employment');
-            $table->biginteger('area_id')->unsigned();
-            $table->foreign('area_id')->references('id')->on('Areas');
-            $table->biginteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('Users');
+
+            $table->foreignId('area_id');
+
+            $table->timestamps();
         });
     }
 
