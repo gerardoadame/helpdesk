@@ -14,13 +14,13 @@ class CreateActivePersonTable extends Migration
     public function up()
     {
         Schema::create('active_person', function (Blueprint $table) {
-            $table->integer('id')->autoIncrement();
-            $table->integer('active_id');
-            $table->integer('person_id');
+            $table->id();
             $table->date('assignment');
 
-            $table->foreign('active_id')->references('id')->on('actives');
-            $table->foreign('person_id')->references('id')->on('persons');
+            $table->foreignId('active_id');
+            $table->foreignId('person_id');
+
+            $table->timestamps();
         });
     }
 
