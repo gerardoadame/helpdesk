@@ -20,7 +20,6 @@ class CreateUserTable extends Migration
             $table->boolean('admin')->default(0);
             $table->text('avatar')->default('default.png');
 
-            $table->foreignId('type_id')->on('user_type');
             $table->foreignId('person_id');
 
             $table->rememberToken();

@@ -32,7 +32,7 @@ class AuthController extends Controller
             'employment' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string',
-            'type' => 'required',
+            'is_agent' => 'required|boolean',
             'area' => 'required',
         ]);
 
@@ -51,7 +51,7 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'admin' => $request->admin,
-                'type_id' => $request->type,
+                'is_agent' => $request->is_agent,
             ]));
 
         } catch (QueryException $e) {
@@ -96,7 +96,7 @@ class AuthController extends Controller
 
         return response(
             $data = [
-                'user' => User::with(['person', 'type',])->where('id', Auth::id())->first(),
+                'user' => User::with(['person'])->where('id', Auth::id())->first(),
                 'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',
                 'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()

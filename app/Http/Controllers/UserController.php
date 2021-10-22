@@ -16,7 +16,6 @@ class UserController extends Controller
     {
         $user = $request->user();
         $user->person = $user->person()->first();
-        $user->type = $user->type()->first();
 
         return response($user);
     }
