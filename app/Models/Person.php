@@ -20,7 +20,6 @@ class Person extends Model
     	'address',
     	'phone',
     	'employment',
-        'user_id',
         'area_id',
     ];
 
