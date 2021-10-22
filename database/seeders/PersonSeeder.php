@@ -23,6 +23,7 @@ class PersonSeeder extends Seeder
                 'phone' => "871xxxxxxx",
                 'employment' => "ingeniero",
                 'area_id' => 1,
+                'is_agent' => true
             ], [
                 'name' => 'Juan Gerardo',
                 'last_name' => 'Adame Torres',
@@ -31,6 +32,7 @@ class PersonSeeder extends Seeder
                 'phone' => "871xxxxxxx",
                 'employment' => "tecnico",
                 'area_id' => 1,
+                'is_agent' => true
             ], [
                 'name' => 'Juan Angel',
                 'last_name' => 'Reyes Lira',
@@ -39,6 +41,7 @@ class PersonSeeder extends Seeder
                 'phone' => "871xxxxxxx",
                 'employment' => "chingon",
                 'area_id' => 2,
+                'is_agent' => false
             ], [
                 'name' => 'Andres Manuel',
                 'last_name' => 'Lopéz Obrador',
@@ -47,6 +50,7 @@ class PersonSeeder extends Seeder
                 'phone' => "871xxxxxxx",
                 'employment' => "Presidente de la república",
                 'area_id' => 2,
+                'is_agent' => false
             ]
         ]);
     }

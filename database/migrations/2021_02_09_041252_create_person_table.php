@@ -21,6 +21,7 @@ class CreatePersonTable extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('employment');
+            $table->boolean('is_agent')->default(false);
 
             $table->foreignId('area_id');
 
