@@ -8,16 +8,16 @@ use Illuminate\Http\Request;
 
 class PersonController extends Controller
 {
-    //lista de personas
+
     function list(Request $request)
     {
         try {
-             $person = Person::join('users','users.id','=','persons.user_id')
-             ->join('user_type','users.type_id','=','user_type.id')
-             ->select('persons.id', 'persons.name','persons.last_name','persons.employment','persons.phone','users.email','users.admin','user_type.type')->get();
-             return $person;
 
-            $person = User::has('person')->has('type')->get();
+            return Person::with([
+                'user' => fn($query) => $query->select('email', 'admin', 'person_id', 'type_id'),
+                'user.type' => fn($query) => $query->select('id', 'type'),
+            ])->get(['id', 'name', 'last_name', 'employment', 'phone']);
+
         } catch (QueryException $e) {
             return response(
                 $data = [
@@ -28,6 +28,7 @@ class PersonController extends Controller
             );
         }
     }
+
     function viewperson(Request $request)
     {
         try {
@@ -54,14 +55,14 @@ class PersonController extends Controller
             $person =  Person::findOrfail($id);
             $person->update([
                 'name' => request('name'),
-                'last_name' =>request('last_name'),
+                'last_name' => request('last_name'),
                 'address' => request('address'),
                 'birth' => request('birth'),
                 'phone' => request('phone'),
                 'employment' => request('employment'),
 
             ]);
-          //  return response()->json($data = ["message" => "Updated correctly"],$status = 200);
+            //  return response()->json($data = ["message" => "Updated correctly"],$status = 200);
         } catch (QueryException $e) {
             return response(
                 $data = [
@@ -71,7 +72,6 @@ class PersonController extends Controller
                 $status = 404
             );
         }
-
     }
 
     private function getRatingAverage(int $personId, string $type = 'agent'): float
@@ -82,8 +82,7 @@ class PersonController extends Controller
         if ($type === 'agent') {
             $scoreColumn = 'score_tech';
             $personColumn = 'technical_id';
-        }
-        elseif ($type === 'client') {
+        } elseif ($type === 'client') {
             $scoreColumn = 'score_usr';
             $personColumn = 'employed_id';
         }

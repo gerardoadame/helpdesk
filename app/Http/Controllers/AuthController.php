@@ -23,6 +23,7 @@ class AuthController extends Controller
         return response(['message' => $status]);
     }
 
+    // TODO Actualizar esta funcion antes de usar
     public function signUp(Request $request)
     {
         $request->validate([
@@ -36,22 +37,23 @@ class AuthController extends Controller
         ]);
 
         try {
-            $usr = User::forceCreate([
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'admin' => $request->admin,
-                'type_id' => $request->type,
-            ]);
-            Person::create([
+            $person = Person::create([
                 'name' => $request->name,
                 'last_name' => $request->last_name,
                 'birth' => $request->birth,
                 'address' => $request->address,
                 'phone' => $request->phone,
                 'employment' => $request->employment,
-                'user_id' => $usr->id,
                 'area_id' => $request->area,
             ]);
+
+            $person->user()->save(new User([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'admin' => $request->admin,
+                'type_id' => $request->type,
+            ]));
+
         } catch (QueryException $e) {
             return response(
                 $data = [

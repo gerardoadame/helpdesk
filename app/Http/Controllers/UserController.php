@@ -12,14 +12,6 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    /**
-     * Obtener todos los usuarios
-     */
-    public function user(Request $request)
-    {
-        return response(User::all());
-    }
-
     public function detail(Request $request)
     {
         $user = $request->user();
@@ -34,7 +26,7 @@ class UserController extends Controller
     {
         try {
             $usr = $req->user();
-            $per = Person::where('user_id', $usr->id)->first();
+            $per = $usr->person()->first();
         } catch (QueryException $e) {
             return response(
                 $data = [
