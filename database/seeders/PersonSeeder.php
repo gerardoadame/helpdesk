@@ -39,6 +39,14 @@ class PersonSeeder extends Seeder
                 'phone' => "871xxxxxxx",
                 'employment' => "chingon",
                 'area_id' => 2,
+            ], [
+                'name' => 'Andres Manuel',
+                'last_name' => 'Lopéz Obrador',
+                'birth' => '1999-03-15',
+                'address' => "carolinas",
+                'phone' => "871xxxxxxx",
+                'employment' => "Presidente de la república",
+                'area_id' => 2,
             ]
         ]);
     }
