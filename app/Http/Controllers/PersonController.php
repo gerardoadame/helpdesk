@@ -9,13 +9,13 @@ use Illuminate\Http\Request;
 class PersonController extends Controller
 {
 
-    function list(Request $request)
+    function list()
     {
         try {
 
             return Person::with([
-                'user' => fn($query) => $query->select('email', 'admin', 'person_id', 'type_id'),
-            ])->get(['id', 'name', 'last_name', 'employment', 'phone']);
+                'user' => fn($query) => $query->select('email', 'admin', 'person_id'),
+            ])->get(['id', 'name', 'last_name', 'employment', 'email', 'phone']);
 
         } catch (QueryException $e) {
             return response(
