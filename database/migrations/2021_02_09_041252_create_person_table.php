@@ -17,10 +17,11 @@ class CreatePersonTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('last_name');
-            $table->date('birth')->nullable();
+            $table->string('employment');
+            $table->string('email', 320)->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
-            $table->string('employment');
+            $table->date('birth')->nullable();
             $table->boolean('is_agent')->default(false);
 
             $table->foreignId('area_id');

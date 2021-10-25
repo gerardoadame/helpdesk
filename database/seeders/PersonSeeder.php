@@ -18,6 +18,7 @@ class PersonSeeder extends Seeder
             [
                 'name' => 'Juan Enrique',
                 'last_name' => 'Espinoza De Los Santos',
+                'email' => 'juan@fimsa.com',
                 'birth' => '2000-01-01',
                 'address' => "av del desierto #525",
                 'phone' => "871xxxxxxx",
@@ -27,6 +28,7 @@ class PersonSeeder extends Seeder
             ], [
                 'name' => 'Juan Gerardo',
                 'last_name' => 'Adame Torres',
+                'email' => 'elgeras@otro.com',
                 'birth' => '2000-01-01',
                 'address' => "cerrada huizachal #78",
                 'phone' => "871xxxxxxx",
@@ -36,6 +38,7 @@ class PersonSeeder extends Seeder
             ], [
                 'name' => 'Juan Angel',
                 'last_name' => 'Reyes Lira',
+                'email' => 'juaangel.rey@gmail.com',
                 'birth' => '1999-03-15',
                 'address' => "carolinas",
                 'phone' => "871xxxxxxx",
@@ -45,6 +48,7 @@ class PersonSeeder extends Seeder
             ], [
                 'name' => 'Andres Manuel',
                 'last_name' => 'Lopéz Obrador',
+                'email' => null,
                 'birth' => '1999-03-15',
                 'address' => "carolinas",
                 'phone' => "871xxxxxxx",
