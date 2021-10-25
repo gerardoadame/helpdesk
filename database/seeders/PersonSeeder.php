@@ -23,7 +23,7 @@ class PersonSeeder extends Seeder
                 'address' => "av del desierto #525",
                 'phone' => "871xxxxxxx",
                 'employment' => "ingeniero",
-                'area_id' => 1,
+                'area_id' => null,
                 'is_agent' => true
             ], [
                 'name' => 'Juan Gerardo',
@@ -33,7 +33,7 @@ class PersonSeeder extends Seeder
                 'address' => "cerrada huizachal #78",
                 'phone' => "871xxxxxxx",
                 'employment' => "tecnico",
-                'area_id' => 1,
+                'area_id' => null,
                 'is_agent' => true
             ], [
                 'name' => 'Juan Angel',
@@ -43,7 +43,7 @@ class PersonSeeder extends Seeder
                 'address' => "carolinas",
                 'phone' => "871xxxxxxx",
                 'employment' => "chingon",
-                'area_id' => 2,
+                'area_id' => null,
                 'is_agent' => false
             ], [
                 'name' => 'Andres Manuel',
@@ -53,7 +53,7 @@ class PersonSeeder extends Seeder
                 'address' => "carolinas",
                 'phone' => "871xxxxxxx",
                 'employment' => "Presidente de la república",
-                'area_id' => 2,
+                'area_id' => null,
                 'is_agent' => false
             ]
         ]);
