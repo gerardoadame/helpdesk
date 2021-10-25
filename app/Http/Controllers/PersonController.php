@@ -15,7 +15,6 @@ class PersonController extends Controller
 
             return Person::with([
                 'user' => fn($query) => $query->select('email', 'admin', 'person_id', 'type_id'),
-                'user.type' => fn($query) => $query->select('id', 'type'),
             ])->get(['id', 'name', 'last_name', 'employment', 'phone']);
 
         } catch (QueryException $e) {
@@ -32,7 +31,7 @@ class PersonController extends Controller
     function viewperson(Request $request)
     {
         try {
-            $person = Person::where('id', $request->id)->with('user', 'user.type')->firstOrFail();
+            $person = Person::where('id', $request->id)->with('user')->firstOrFail();
 
             // aniade puntuaciones
             $person->asAgentScore = $this->getRatingAverage($person->id, 'agent');

@@ -256,7 +256,7 @@ class TicketController extends Controller
                 }
             }
 
-            $userIdType = ($usuario->type->type == 'tecnico') ? 'technical_id' : 'employed_id';
+            $userIdType = ($usuario->person->is_agent) ? 'technical_id' : 'employed_id';
 
             switch ($request->filter) {
                 case 'all':
