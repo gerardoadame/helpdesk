@@ -34,8 +34,8 @@ class PersonController extends Controller
             $person = Person::where('id', $request->id)->with('user')->firstOrFail();
 
             // aniade puntuaciones
-            $person->asAgentScore = $this->getRatingAverage($person->id, 'agent');
-            $person->asClientScore = $this->getRatingAverage($person->id, 'client');
+            $person->score_as_agent = $this->getRatingAverage($person->id, 'agent');
+            $person->score_as_client = $this->getRatingAverage($person->id, 'client');
 
             return $person;
         } catch (QueryException $e) {
