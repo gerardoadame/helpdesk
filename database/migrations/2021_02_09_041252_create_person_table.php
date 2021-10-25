@@ -17,7 +17,7 @@ class CreatePersonTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('last_name');
-            $table->string('employment');
+            $table->string('employment')->nullable();
             $table->string('email', 320)->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();

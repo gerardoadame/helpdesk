@@ -26,7 +26,6 @@ class CreateTicketsTable extends Migration
             $table->integer('type_id');
             $table->integer('priority_id');
 
-
             $table->foreignId('employed_id')->references('id')->on('persons');
             $table->foreign('status_id')->references('id')->on('statuses');
             $table->foreign('type_id')->references('id')->on('type_tickets');
