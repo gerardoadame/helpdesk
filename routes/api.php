@@ -6,7 +6,8 @@ use App\Http\Controllers\{
     TicketController,
     UserController,
     PersonController,
-    ActiveController
+    ActiveController,
+    AreaController
 };
 
 /*
@@ -34,6 +35,8 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:api')->group(function () {
 
     Route::get('auth/logout', [AuthController::class, 'logout']);
+
+    Route::apiResource('areas', AreaController::class);
 
     Route::prefix('users')->group(function () {
         // Lista de usuarios
