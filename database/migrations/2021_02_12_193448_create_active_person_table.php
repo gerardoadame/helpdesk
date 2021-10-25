@@ -17,8 +17,8 @@ class CreateActivePersonTable extends Migration
             $table->id();
             $table->date('assignment');
 
-            $table->foreignId('active_id');
-            $table->foreignId('person_id');
+            $table->foreignId('active_id')->on('actives');
+            $table->foreignId('person_id')->on('persons');
 
             $table->timestamps();
         });

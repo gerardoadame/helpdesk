@@ -20,7 +20,7 @@ class CreateUserTable extends Migration
             $table->boolean('admin')->default(0);
             $table->text('avatar')->default('default.png');
 
-            $table->foreignId('person_id');
+            $table->foreignId('person_id')->on('persons');
 
             $table->rememberToken();
             $table->timestamps();

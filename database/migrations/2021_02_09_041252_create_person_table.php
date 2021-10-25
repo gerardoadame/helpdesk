@@ -24,7 +24,7 @@ class CreatePersonTable extends Migration
             $table->date('birth')->nullable();
             $table->boolean('is_agent')->default(false);
 
-            $table->foreignId('area_id');
+            $table->foreignId('area_id')->nullable()->constrained();
 
             $table->timestamps();
         });
