@@ -38,16 +38,6 @@ class PersonController extends Controller
             $person->score_as_agent = $this->getRatingAverage($person->id, 'agent');
             $person->score_as_client = $this->getRatingAverage($person->id, 'client');
 
-            // imagen de persona en base64
-            $avatarPath = $person->avatar;
-            if ($avatarPath && Storage::exists($avatarPath)) {
-                $image = Storage::get($avatarPath);
-                $type = pathinfo(storage_path($avatarPath), PATHINFO_EXTENSION);
-
-                $encodedImage = 'data:image/' . $type . ';base64, ' . base64_encode($image);
-                $person->avatar = $encodedImage;
-            }
-
             return $person;
         } catch (QueryException $e) {
             return response(
