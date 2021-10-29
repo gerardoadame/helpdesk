@@ -68,7 +68,7 @@ class TicketController extends Controller
     }
 
     // metodo para ver informacion de un ticket en especifico
-    function viewOne(Request $request, $id)
+    function viewOne(int $id)
     {
         try {
             $ticket = Ticket::with([
@@ -79,13 +79,6 @@ class TicketController extends Controller
                 'reply'
             ])->where('id', $id)->first();
 
-            /*
-            |------------------------------------------------------------------|
-            | CÓDIGO TEMPORAL                                                  |
-            |------------------------------------------------------------------|
-            | Construir "retroalimentación" (feedback) dentro del ticket o
-            | aplicar una relación 1:1
-            */
             $feedback = $ticket->reply->first();
 
             if ($feedback) {
@@ -100,8 +93,6 @@ class TicketController extends Controller
             }
 
             $ticket->feedback = $feedback;
-
-            /**|FIN DE CÓDIGO TEMPORAL */
 
         } catch (QueryException $e) {
             return response(
