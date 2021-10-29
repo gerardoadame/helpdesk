@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use Illuminate\Database\QueryException;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Person;
-use App\Models\User;
 
 class UserController extends Controller
 {
