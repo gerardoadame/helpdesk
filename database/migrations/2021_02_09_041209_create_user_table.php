@@ -18,7 +18,6 @@ class CreateUserTable extends Migration
             $table->string('email',45)->unique();
             $table->string('password',60);
             $table->boolean('admin')->default(0);
-            $table->text('avatar')->default('default.png');
 
             $table->foreignId('person_id')->on('persons');
 

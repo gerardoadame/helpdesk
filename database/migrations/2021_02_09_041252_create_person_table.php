@@ -22,6 +22,7 @@ class CreatePersonTable extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->date('birth')->nullable();
+            $table->text('avatar')->default('default/avatar.png');
             $table->boolean('is_agent')->default(false);
 
             $table->foreignId('area_id')->nullable()->constrained();
