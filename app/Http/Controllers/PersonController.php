@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{User, Person, Ticket};
+use App\Models\{Person, Ticket};
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PersonController extends Controller
 {
@@ -36,6 +37,16 @@ class PersonController extends Controller
             // aniade puntuaciones
             $person->score_as_agent = $this->getRatingAverage($person->id, 'agent');
             $person->score_as_client = $this->getRatingAverage($person->id, 'client');
+
+            // imagen de persona en base64
+            $avatarPath = $person->avatar;
+            if ($avatarPath && Storage::exists($avatarPath)) {
+                $image = Storage::get($avatarPath);
+                $type = pathinfo(storage_path($avatarPath), PATHINFO_EXTENSION);
+
+                $encodedImage = 'data:image/' . $type . ';base64, ' . base64_encode($image);
+                $person->avatar = $encodedImage;
+            }
 
             return $person;
         } catch (QueryException $e) {
@@ -87,8 +98,9 @@ class PersonController extends Controller
         }
 
         $conditions = [
-            ['status_id', 1],
-            [$personColumn, $personId]
+            ['status_id', 1], // tickets que esten cerrados
+            [$personColumn, $personId],
+            [$scoreColumn, '!=', null] // ignora tickets no calificados
         ];
 
         return (float) Ticket::where($conditions)->avg($scoreColumn) ?? 0;
