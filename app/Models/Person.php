@@ -17,11 +17,14 @@ class Person extends Model
     protected $fillable = [
     	'name',
     	'last_name',
+    	'is_agent',
     	'birth',
     	'address',
     	'phone',
     	'employment',
+    	'email',
         'area_id',
+        'avatar',
     ];
 
     /**
