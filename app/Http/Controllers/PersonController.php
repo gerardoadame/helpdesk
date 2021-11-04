@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\{Person, Ticket};
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class PersonController extends Controller
 {
@@ -57,6 +56,21 @@ class PersonController extends Controller
 
     function update(Request $request, int $id)
     {
+
+        $request->validate([
+            'name' => 'required|string',
+            'last_name' => 'required|string',
+            'is_agent' => 'required|boolean',
+            'birth' => 'nullable|date',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'employment' => 'nullable|string',
+            'email' => 'nullable|email',
+            'area_id' => 'nullable|integer',
+            'avatar' => 'file|image|nullable',
+            'avatar_status' => 'required|string'
+        ]);
+
         try {
             $person =  Person::findOrfail($id);
             $person->update([
