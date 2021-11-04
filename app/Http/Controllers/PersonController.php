@@ -54,6 +54,7 @@ class PersonController extends Controller
             );
         }
     }
+
     function update(Request $request, int $id)
     {
         try {
@@ -69,6 +70,32 @@ class PersonController extends Controller
                 'email' => $request->get('email'),
                 'area_id' => $request->get('area_id'),
             ]);
+
+            $avatarStatus = $request->get('avatar_status');
+
+            if ($avatarStatus != 'same') {
+
+                $imagePath = null;
+
+                if ($avatarStatus == 'changed') {
+
+                    // Saving image file
+                    if ($request->file('avatar')) {
+                        $image = $request->file('avatar');
+                        $fileName = time() . '.' . $image->getClientOriginalExtension();
+
+                        $image->storeAs('avatar', $fileName);
+
+                        // Ticket create
+                        $imagePath = "avatar/" . $fileName;
+
+                        $person->update(['avatar' => $imagePath]);
+                    }
+                } else if ($avatarStatus == 'deleted') {
+                    # TODO: Aplicar un proceso de eliiminación (papelera) de la imagen
+                    $person->update(['avatar' => 'default/avatar.png']);
+                }
+            }
 
             return $person;
 
