@@ -29,15 +29,15 @@ class PersonController extends Controller
         }
     }
 
-    function store()
+    function store(Request $request)
     {
         return response()->isNotFound();
     }
 
-    function show(Request $request)
+    function show(int $id)
     {
         try {
-            $person = Person::where('id', $request->id)->with('user')->firstOrFail();
+            $person = Person::where('id', $id)->with('user')->firstOrFail();
 
             // aniade puntuaciones
             $person->score_as_agent = $this->getRatingAverage($person->id, 'agent');
