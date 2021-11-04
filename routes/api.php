@@ -38,6 +38,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('areas', AreaController::class);
 
+    Route::apiResource('persons', PersonController::class);
+
     Route::prefix('users')->group(function () {
         // Lista de usuarios
         Route::get('', [UserController::class, 'user']);
@@ -59,17 +61,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('rate/{id}', [TicketController::class, 'rate']);
         Route::put('reply/{id}',[TicketController::class, 'reply']);
         Route::put('edtreply',[TicketController::class, 'editreply']);
-    });
-
-    Route::prefix('person')->group(function(){
-
-        Route::get('',[PersonController::class,'list']);
-        Route::get('view/{id}',[PersonController::class,'viewperson']);
-        Route::put('edit/{id}',[PersonController::class,'Editperson']);
-        Route::get('list',[PersonController::class,'list']);
-        Route::get('viewperson/{id}',[PersonController::class,'viewperson']);
-        Route::post('edit',[PersonController::class,'Editperson']);
-
     });
 
     Route::prefix('active')->group(function(){

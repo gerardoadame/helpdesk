@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class PersonController extends Controller
 {
 
-    function list()
+    function index()
     {
         try {
 
@@ -29,7 +29,12 @@ class PersonController extends Controller
         }
     }
 
-    function viewperson(Request $request)
+    function store()
+    {
+        return response()->isNotFound();
+    }
+
+    function show(Request $request)
     {
         try {
             $person = Person::where('id', $request->id)->with('user')->firstOrFail();
@@ -49,20 +54,24 @@ class PersonController extends Controller
             );
         }
     }
-    function Editperson(Request $request, $id)
+    function update(Request $request, int $id)
     {
         try {
             $person =  Person::findOrfail($id);
             $person->update([
-                'name' => request('name'),
-                'last_name' => request('last_name'),
-                'address' => request('address'),
-                'birth' => request('birth'),
-                'phone' => request('phone'),
-                'employment' => request('employment'),
-
+                'name' => $request->get('name'),
+                'last_name' => $request->get('last_name'),
+                'is_agent' => $request->get('is_agent'),
+                'birth' => $request->get('birth'),
+                'address' => $request->get('address'),
+                'phone' => $request->get('phone'),
+                'employment' => $request->get('employment'),
+                'email' => $request->get('email'),
+                'area_id' => $request->get('area_id'),
             ]);
-            //  return response()->json($data = ["message" => "Updated correctly"],$status = 200);
+
+            return $person;
+
         } catch (QueryException $e) {
             return response(
                 $data = [
