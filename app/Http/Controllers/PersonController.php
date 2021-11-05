@@ -30,7 +30,7 @@ class PersonController extends Controller
 
     function store(Request $request)
     {
-        return response()->isNotFound();
+        return response(['message' => 'Not Found'], 404);
     }
 
     function show(int $id)
