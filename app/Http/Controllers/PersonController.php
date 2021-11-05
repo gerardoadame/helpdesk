@@ -13,9 +13,7 @@ class PersonController extends Controller
     {
         try {
 
-            return Person::with([
-                'user' => fn($query) => $query->select('is_admin', 'person_id'),
-            ])->get(['id', 'avatar', 'name', 'last_name', 'employment', 'email', 'phone']);
+            return Person::with('user')->get();
 
         } catch (QueryException $e) {
             return response(
