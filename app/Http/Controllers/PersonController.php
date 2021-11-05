@@ -30,7 +30,44 @@ class PersonController extends Controller
 
     function store(Request $request)
     {
-        return response(['message' => 'Not Found'], 404);
+        $request->validate([
+            'name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'nullable|email',
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string',
+            'employment' => 'nullable|string',
+            'area_id' => 'nullable|integer',
+            'birth' => 'nullable|date',
+            'avatar' => 'nullable|file|image',
+            'is_agent' => 'boolean'
+        ]);
+
+        // <!-- Save avatar
+        $avatarPath = 'default/avatar.png';
+        $avatarImage = $request->file('avatar');
+        if ($avatarImage) {
+            $fileName = time() . '.' . $avatarImage->getClientOriginalExtension();
+
+            $avatarImage->storeAs('avatar', $fileName);
+
+            // Ticket create
+            $avatarPath = "avatar/" . $fileName;
+        }
+        // --> Save avatar
+
+        return Person::create([
+            'name' => $request->get('name'),
+            'last_name' => $request->get('last_name'),
+            'email' => $request->get('email'),
+            'phone' => $request->get('phone'),
+            'address' => $request->get('address'),
+            'employment' => $request->get('employment'),
+            'area_id' => $request->get('area_id'),
+            'birth' => $request->get('birth'),
+            'avatar' => $avatarPath,
+            'is_agent' => $request->boolean('is_agent')
+        ]);
     }
 
     function show(int $id)
