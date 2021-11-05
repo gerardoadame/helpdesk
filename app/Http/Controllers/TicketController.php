@@ -213,7 +213,7 @@ class TicketController extends Controller
             $date = Carbon::now();
             $month = $date->format('m');
             $year = $date->format('Y');
-            if ($usuario->admin == 1) {
+            if ($usuario->is_admin == true) {
 
                 if ($request->show_global == True) {
                     $tickets = Ticket::get();

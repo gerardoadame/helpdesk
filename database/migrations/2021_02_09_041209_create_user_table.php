@@ -17,7 +17,7 @@ class CreateUserTable extends Migration
             $table->id();
             $table->string('email',45)->unique();
             $table->string('password',60);
-            $table->boolean('admin')->default(0);
+            $table->boolean('is_admin')->default(false);
 
             $table->foreignId('person_id')->on('persons');
 

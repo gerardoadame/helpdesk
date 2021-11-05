@@ -19,17 +19,17 @@ class UserSeeder extends Seeder
             [
                 'email' => 'juan@fimsa.com',
                 'password' => Hash::make('12345678'),
-                'admin' => true,
+                'is_admin' => true,
                 'person_id' => 1,
             ], [
                 'email' => 'enrique@fimsa.com',
                 'password' => Hash::make('12345678'),
-                'admin' => false,
+                'is_admin' => false,
                 'person_id' => 2,
             ], [
                 'email' => 'juaangel.rey@gmail.com',
                 'password' => Hash::make('12345678'),
-                'admin' => false,
+                'is_admin' => false,
                 'person_id' => 3,
             ]
         ]);

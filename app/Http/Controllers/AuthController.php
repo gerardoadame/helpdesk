@@ -50,7 +50,7 @@ class AuthController extends Controller
             $person->user()->save(new User([
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'admin' => $request->admin,
+                'is_admin' => $request->is_admin,
                 'is_agent' => $request->is_agent,
             ]));
 

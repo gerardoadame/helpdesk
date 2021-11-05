@@ -38,7 +38,7 @@ class UserController extends Controller
         $usr->update([
             'email' => $req->email,
             'password' => Hash::make($req->password),
-            'admin' => $req->admin,
+            'is_admin' => $req->is_admin,
             // 'avatar'=> $req->avatar,
             'type_id' => $req->type,
         ]);
