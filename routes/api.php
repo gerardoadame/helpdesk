@@ -34,22 +34,18 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
 
+    Route::prefix('active')->group(function(){
+        Route::get('list',[ActiveController::class,'list']);
+        Route::put('create', [ActiveController::class,'create']);
+        Route::get('viewactive/{id}',[ActiveController::class,'viewactive']);
+        Route::post('edit/{id}',[ActiveController::class,'Edit']);
+    });
+
     Route::get('auth/logout', [AuthController::class, 'logout']);
 
-    Route::apiResource('areas', AreaController::class);
-
-    Route::apiResource('persons', PersonController::class);
-
-    Route::prefix('users')->group(function () {
-        // Lista de usuarios
-        Route::get('', [UserController::class, 'user']);
-        // Info. personal de usuario
-        Route::get('detail', [UserController::class, 'detail']);
-        // editar informacion del usuario
-        Route::get('edit', [UserController::class, 'edit'])->name('edit');
-
-        Route::get('agents', [UserController::class, 'agents']);
-        Route::get('clients', [UserController::class, 'clients']);
+    Route::prefix('persons')->group(function() {
+        Route::get('agents', [PersonController::class, 'agents']);
+        Route::get('clients', [PersonController::class, 'clients']);
     });
 
     Route::prefix('tickets')->group(function () {
@@ -63,11 +59,20 @@ Route::middleware('auth:api')->group(function () {
         Route::put('edtreply',[TicketController::class, 'editreply']);
     });
 
-    Route::prefix('active')->group(function(){
-        Route::get('list',[ActiveController::class,'list']);
-        Route::put('create', [ActiveController::class,'create']);
-        Route::get('viewactive/{id}',[ActiveController::class,'viewactive']);
-        Route::post('edit/{id}',[ActiveController::class,'Edit']);
+    Route::prefix('users')->group(function () {
+        // Lista de usuarios
+        Route::get('', [UserController::class, 'user']);
+        // Info. personal de usuario
+        Route::get('detail', [UserController::class, 'detail']);
+        // editar informacion del usuario
+        Route::get('edit', [UserController::class, 'edit'])->name('edit');
     });
+
+    // Solicitudes CRUD
+
+    Route::apiResources([
+        'areas' => AreaController::class,
+        'persons' => PersonController::class,
+    ]);
 
 });

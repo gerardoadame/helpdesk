@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Person;
 
 class UserController extends Controller
 {
@@ -60,29 +59,5 @@ class UserController extends Controller
             ],
             $status = 200
         );
-    }
-
-    # SIMPLIFICAR codigo duplicado: agents(), clients()
-    public function agents(Request $request) {
-        // tecnicos
-        $users = Person::whereHas('user', function ($query) {
-            return $query->where('users.type_id', '=', 1);
-        })->get()
-        ->map(function ($user) {
-            return $user->only(['id', 'name', 'last_name']);
-        });;
-
-        return response($users);
-    }
-    public function clients(Request $request) {
-        // clientes
-        $users = Person::whereHas('user', function ($query) {
-            return $query->where('users.type_id', '=', 2);
-        })->get()
-        ->map(function ($user) {
-            return $user->only(['id', 'name', 'last_name']);
-        });;
-
-        return response($users);
     }
 }

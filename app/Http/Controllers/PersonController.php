@@ -159,6 +159,18 @@ class PersonController extends Controller
         }
     }
 
+    public function agents() {
+        return $this->getPersons(true)->get(['id', 'name', 'last_name']);
+    }
+
+    public function clients() {
+        return $this->getPersons(false)->get(['id', 'name', 'last_name']);
+    }
+
+    private function getPersons($areAgents = false) {
+        return Person::where('is_agent', $areAgents);
+    }
+
     private function getRatingAverage(int $personId, string $type = 'agent'): float
     {
         $scoreColumn = null;
