@@ -15,24 +15,23 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        // el primer registro tiene el campo admin porqe en los demas sera por defecto 0
         DB::table('users')->insert([
-        	'email'=>'juan@fimsa.com',
-        	'password'=>Hash::make('12345678'),
-            'admin'=>1,
-        	'type_id'=>1,
-        ]);
-
-        DB::table('users')->insert([
-            'email'=>'enrique@fimsa.com',
-            'password'=>Hash::make('12345678'),
-            'type_id'=>1,
-        ]);
-
-        DB::table('users')->insert([
-            'email'=>'angel@fimsa.com',
-            'password'=>Hash::make('12345678'),
-            'type_id'=>2,
+            [
+                'email' => 'juan@fimsa.com',
+                'password' => Hash::make('12345678'),
+                'is_admin' => true,
+                'person_id' => 1,
+            ], [
+                'email' => 'enrique@fimsa.com',
+                'password' => Hash::make('12345678'),
+                'is_admin' => false,
+                'person_id' => 2,
+            ], [
+                'email' => 'juaangel.rey@gmail.com',
+                'password' => Hash::make('12345678'),
+                'is_admin' => false,
+                'person_id' => 3,
+            ]
         ]);
     }
 }

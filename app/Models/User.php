@@ -21,8 +21,7 @@ class User extends Authenticatable implements CanResetPassword
         'email',
         'password',
         'type_id',
-        'admin',
-        'avatar',
+        'person_id'
     ];
 
     /**
@@ -50,10 +49,6 @@ class User extends Authenticatable implements CanResetPassword
     }
 
     public function person() {
-        return $this->hasOne(Person::class);
-    }
-
-    public function type(){
-        return $this->belongsTo(User_Type::class,"type_id");
+        return $this->belongsTo(Person::class);
     }
 }

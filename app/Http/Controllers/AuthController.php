@@ -23,6 +23,7 @@ class AuthController extends Controller
         return response(['message' => $status]);
     }
 
+    // TODO Actualizar esta funcion antes de usar
     public function signUp(Request $request)
     {
         $request->validate([
@@ -31,27 +32,28 @@ class AuthController extends Controller
             'employment' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string',
-            'type' => 'required',
+            'is_agent' => 'required|boolean',
             'area' => 'required',
         ]);
 
         try {
-            $usr = User::forceCreate([
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'admin' => $request->admin,
-                'type_id' => $request->type,
-            ]);
-            Person::create([
+            $person = Person::create([
                 'name' => $request->name,
                 'last_name' => $request->last_name,
                 'birth' => $request->birth,
                 'address' => $request->address,
                 'phone' => $request->phone,
                 'employment' => $request->employment,
-                'user_id' => $usr->id,
                 'area_id' => $request->area,
             ]);
+
+            $person->user()->save(new User([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'is_admin' => $request->is_admin,
+                'is_agent' => $request->is_agent,
+            ]));
+
         } catch (QueryException $e) {
             return response(
                 $data = [
@@ -94,7 +96,7 @@ class AuthController extends Controller
 
         return response(
             $data = [
-                'user' => User::with(['person', 'type',])->where('id', Auth::id())->first(),
+                'user' => User::with(['person'])->where('id', Auth::id())->first(),
                 'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',
                 'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()

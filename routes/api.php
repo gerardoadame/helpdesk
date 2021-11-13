@@ -6,7 +6,8 @@ use App\Http\Controllers\{
     TicketController,
     UserController,
     PersonController,
-    ActiveController
+    ActiveController,
+    AreaController
 };
 
 /*
@@ -33,18 +34,18 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
 
+    Route::prefix('active')->group(function(){
+        Route::get('list',[ActiveController::class,'list']);
+        Route::put('create', [ActiveController::class,'create']);
+        Route::get('viewactive/{id}',[ActiveController::class,'viewactive']);
+        Route::post('edit/{id}',[ActiveController::class,'Edit']);
+    });
+
     Route::get('auth/logout', [AuthController::class, 'logout']);
 
-    Route::prefix('users')->group(function () {
-        // Lista de usuarios
-        Route::get('', [UserController::class, 'user']);
-        // Info. personal de usuario
-        Route::get('detail', [UserController::class, 'detail']);
-        // editar informacion del usuario
-        Route::get('edit', [UserController::class, 'edit'])->name('edit');
-
-        Route::get('agents', [UserController::class, 'agents']);
-        Route::get('clients', [UserController::class, 'clients']);
+    Route::prefix('persons')->group(function() {
+        Route::get('agents', [PersonController::class, 'agents']);
+        Route::get('clients', [PersonController::class, 'clients']);
     });
 
     Route::prefix('tickets')->group(function () {
@@ -58,22 +59,20 @@ Route::middleware('auth:api')->group(function () {
         Route::put('edtreply',[TicketController::class, 'editreply']);
     });
 
-    Route::prefix('person')->group(function(){
-
-        Route::get('',[PersonController::class,'list']);
-        Route::get('view/{id}',[PersonController::class,'viewperson']);
-        Route::put('edit/{id}',[PersonController::class,'Editperson']);
-        Route::get('list',[PersonController::class,'list']);
-        Route::get('viewperson/{id}',[PersonController::class,'viewperson']);
-        Route::post('edit',[PersonController::class,'Editperson']);
-
+    Route::prefix('users')->group(function () {
+        // Lista de usuarios
+        Route::get('', [UserController::class, 'user']);
+        // Info. personal de usuario
+        Route::get('detail', [UserController::class, 'detail']);
+        // editar informacion del usuario
+        Route::get('edit', [UserController::class, 'edit'])->name('edit');
     });
 
-    Route::prefix('active')->group(function(){
-        Route::get('list',[ActiveController::class,'list']);
-        Route::put('create', [ActiveController::class,'create']);
-        Route::get('viewactive/{id}',[ActiveController::class,'viewactive']);
-        Route::post('edit/{id}',[ActiveController::class,'Edit']);
-    });
+    // Solicitudes CRUD
+
+    Route::apiResources([
+        'areas' => AreaController::class,
+        'persons' => PersonController::class,
+    ]);
 
 });

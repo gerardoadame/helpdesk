@@ -2,29 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use Illuminate\Database\QueryException;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Person;
-use App\Models\User;
 
 class UserController extends Controller
 {
-    /**
-     * Obtener todos los usuarios
-     */
-    public function user(Request $request)
-    {
-        return response(User::all());
-    }
-
     public function detail(Request $request)
     {
         $user = $request->user();
         $user->person = $user->person()->first();
-        $user->type = $user->type()->first();
 
         return response($user);
     }
@@ -34,7 +21,7 @@ class UserController extends Controller
     {
         try {
             $usr = $req->user();
-            $per = Person::where('user_id', $usr->id)->first();
+            $per = $usr->person()->first();
         } catch (QueryException $e) {
             return response(
                 $data = [
@@ -50,7 +37,7 @@ class UserController extends Controller
         $usr->update([
             'email' => $req->email,
             'password' => Hash::make($req->password),
-            'admin' => $req->admin,
+            'is_admin' => $req->is_admin,
             // 'avatar'=> $req->avatar,
             'type_id' => $req->type,
         ]);
@@ -72,29 +59,5 @@ class UserController extends Controller
             ],
             $status = 200
         );
-    }
-
-    # SIMPLIFICAR codigo duplicado: agents(), clients()
-    public function agents(Request $request) {
-        // tecnicos
-        $users = Person::whereHas('user', function ($query) {
-            return $query->where('users.type_id', '=', 1);
-        })->get()
-        ->map(function ($user) {
-            return $user->only(['id', 'name', 'last_name']);
-        });;
-
-        return response($users);
-    }
-    public function clients(Request $request) {
-        // clientes
-        $users = Person::whereHas('user', function ($query) {
-            return $query->where('users.type_id', '=', 2);
-        })->get()
-        ->map(function ($user) {
-            return $user->only(['id', 'name', 'last_name']);
-        });;
-
-        return response($users);
     }
 }

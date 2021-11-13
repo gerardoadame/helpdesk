@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Area extends Model
 {
-    use HasFactory;
-
-    public $timestamps = false;
+    protected $fillable = ['name'];
 
     public function person(){
         return $this->hasOne(Person::class,"id");
