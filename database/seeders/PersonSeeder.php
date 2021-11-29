@@ -15,36 +15,47 @@ class PersonSeeder extends Seeder
     public function run()
     {
         DB::table('persons')->insert([
-        	'name'=>'juan',
-        	'last_name'=>'espinoza',
-        	'birth'=>'2000-01-01',
-        	'address'=>"av del desierto #525",
-        	'phone'=>"871xxxxxxx",
-        	'employment'=>"ingeniero",
-        	'area_id'=>1,
-            'user_id'=>1,
-        ]);
-
-        DB::table('persons')->insert([
-            'name'=>'Enrique',
-            'last_name'=>'de los santos',
-            'birth'=>'2000-01-01',
-            'address'=>"cerrada huizachal #78",
-            'phone'=>"871xxxxxxx",
-            'employment'=>"tecnico",
-            'area_id'=>1,
-            'user_id'=>2,
-        ]);
-
-        DB::table('persons')->insert([
-            'name'=>'angel',
-            'last_name'=>'lira',
-            'birth'=>'1999-03-15',
-            'address'=>"carolinas",
-            'phone'=>"871xxxxxxx",
-            'employment'=>"secretario",
-            'area_id'=>2,
-            'user_id'=>3,
+            [
+                'name' => 'Juan Enrique',
+                'last_name' => 'Espinoza De Los Santos',
+                'email' => 'juan@fimsa.com',
+                'birth' => '2000-01-01',
+                'address' => "av del desierto #525",
+                'phone' => "871xxxxxxx",
+                'employment' => "ingeniero",
+                'area_id' => null,
+                'is_agent' => true
+            ], [
+                'name' => 'Juan Gerardo',
+                'last_name' => 'Adame Torres',
+                'email' => 'elgeras@otro.com',
+                'birth' => '2000-01-01',
+                'address' => "cerrada huizachal #78",
+                'phone' => "871xxxxxxx",
+                'employment' => "tecnico",
+                'area_id' => null,
+                'is_agent' => true
+            ], [
+                'name' => 'Juan Angel',
+                'last_name' => 'Reyes Lira',
+                'email' => 'juaangel.rey@gmail.com',
+                'birth' => '1999-03-15',
+                'address' => "carolinas",
+                'phone' => "871xxxxxxx",
+                'employment' => "chingon",
+                'area_id' => null,
+                'is_agent' => false
+            ], [
+                'name' => 'Andres Manuel',
+                'last_name' => 'Lopéz Obrador',
+                'email' => null,
+                'birth' => '1999-03-15',
+                'address' => "carolinas",
+                'phone' => "871xxxxxxx",
+                'employment' => "Presidente de la república",
+                'area_id' => null,
+                'is_agent' => false
+            ]
         ]);
     }
 }

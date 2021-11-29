@@ -13,9 +13,10 @@ class CreateAreaTable extends Migration
      */
     public function up()
     {
-        Schema::create('Areas', function (Blueprint $table) {
+        Schema::create('areas', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +27,6 @@ class CreateAreaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Areas');
+        Schema::dropIfExists('areas');
     }
 }

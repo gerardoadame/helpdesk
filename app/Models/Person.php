@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\HasApiTokens;
 
 class Person extends Model
@@ -16,16 +17,35 @@ class Person extends Model
     protected $fillable = [
     	'name',
     	'last_name',
+    	'is_agent',
     	'birth',
     	'address',
     	'phone',
     	'employment',
-        'user_id',
+    	'email',
         'area_id',
+        'avatar',
     ];
 
+    /**
+     * Get base64 avatar
+     * @return string
+     */
+    public function getAvatarAttribute(): string
+    {
+        $avatarPath = $this->attributes['avatar'];
+        $image = Storage::get(
+            ($avatarPath && Storage::exists($avatarPath))
+            ? $avatarPath
+            : 'default/avatar.png');
+
+        $type = pathinfo(storage_path($avatarPath), PATHINFO_EXTENSION);
+
+        return 'data:image/' . $type . ';base64, ' . base64_encode($image);
+    }
+
     public function user() {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 
     public function tickets_employed()
